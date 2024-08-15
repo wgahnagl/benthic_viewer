@@ -1,0 +1,14 @@
+[configuration]
+entry_symbol = "gdext_rust_init"
+compatibility_minimum = 4.1
+reloadable = true
+
+[libraries]
+linux.debug.x86_64 =     "res://../metaverse_godot/target/debug/libmetaverse_godot.so"
+linux.release.x86_64 =   "res://../metaverse_godot/target/release/libmetaverse_godot.so"
+windows.debug.x86_64 =   "res://../metaverse_godot/target/debug/metaverse_godot.dll"
+windows.release.x86_64 = "res://../metaverse_godot/target/release/metaverse_godot.dll"
+macos.debug =            "res://../metaverse_godot/target/debug/libmetaverse_godot.dylib"
+macos.release =          "res://../metaverse_godot/target/release/libmetaverse_godot.dylib"
+macos.debug.arm64 =      "res://../metaverse_godot/target/debug/libmetaverse_godot.dylib"
+macos.release.arm64 =    "res://../metaverse_godot/target/release/libmetaverse_godot.dylib"

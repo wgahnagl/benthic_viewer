@@ -1,0 +1,56 @@
+[gd_scene load_steps=2 format=3 uid="uid://ba3lsks3esx5k"]
+
+[ext_resource type="Script" path="res://login.gd" id="1_pf4ie"]
+
+[node name="Login" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pf4ie")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -214.0
+offset_right = 313.0
+grow_vertical = 0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 30
+alignment = 2
+
+[node name="firstname" type="LineEdit" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "First Name"
+
+[node name="lastname" type="LineEdit" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "Last Name"
+
+[node name="Grid" type="LineEdit" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "Grid"
+
+[node name="Password" type="LineEdit" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "Password "
+secret = true
+secret_character = "*"
+
+[node name="Login" type="LoginButton" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Login
+"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Login" to="." method="_on_login_pressed"]
