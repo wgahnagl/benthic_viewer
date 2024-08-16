@@ -1652,9 +1652,9 @@ dependencies = [
 
 [[package]]
 name = "metaverse_login"
-version = "0.1.1"
+version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b39bfba26ddc2c1c48b61e92922711c4479f9a2a0785d4bc2f23625414841813"
+checksum = "43191942aa4653a9fe4856c3ae04a511f12f732560192ebad8ff9a058d44c761"
 dependencies = [
  "actix",
  "actix-rt 2.10.0",
@@ -1696,9 +1696,9 @@ dependencies = [
 
 [[package]]
 name = "metaverse_session"
-version = "0.0.0"
+version = "0.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "30de9f8125a42cb3bf7c0e44b88792dab54487f31ffa94bffc3f69eb29febbb3"
+checksum = "909fd60ab46d0ce2a78c5258be96da23b649e79f2acef19fb4de2fa8d0b95338"
 dependencies = [
  "actix",
  "actix-rt 2.10.0",

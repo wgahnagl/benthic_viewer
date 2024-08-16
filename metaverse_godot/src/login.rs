@@ -1,59 +1,73 @@
+use std::sync::Arc;
+use std::sync::Mutex;
+use tokio::task::JoinHandle;
+
 use godot::classes::Button;
 use godot::classes::IButton;
 use godot::prelude::*;
-use metaverse_session::session::new_session;
 use metaverse_login::models::simulator_login_protocol::Login;
+use metaverse_session::session::new_session;
 use tokio::runtime::Runtime;
 
 #[derive(GodotClass)]
 #[class(base=Button)]
-struct LoginButton{
-    base: Base<Button>
+struct LoginButton {
+    base: Base<Button>,
 }
 
 #[godot_api]
-impl IButton for LoginButton{
+impl IButton for LoginButton {
     fn init(base: Base<Button>) -> Self {
-        Self {
-            base
-        }
+        Self { base }
     }
 }
 
 #[godot_api]
-impl LoginButton{
+impl LoginButton {
     #[func]
-    fn send_login(&mut self, firstname: String, lastname: String, grid: String, password: String,){
+    fn send_login(&mut self, firstname: String, lastname: String, grid: String, password: String) {
         let firstname_clone = firstname.clone();
         let lastname_clone = lastname.clone();
         let grid_clone = grid.clone();
         let password_clone = password.clone();
         let rt = Runtime::new().expect("Failed to create Tokio runtime");
-        
+
         let grid_clone = if grid_clone == "localhost" {
             "http://127.0.0.1".to_string()
         } else {
-                grid_clone
-            };
+            grid_clone
+        };
+
+        // Use an Arc and Mutex to handle the result in a blocking context
 
         // Spawn the async task within the runtime
-        rt.spawn(async move {
-            let session = new_session(Login {
-                first: firstname_clone,
-                last: lastname_clone,
-                passwd: password_clone,
-                channel: "benthic".to_string(),
-                start: "home".to_string(),
-                agree_to_tos: true,
-                read_critical: true,
-            }, build_url(&grid_clone, 9000)).await;
-
-            // Optionally handle the result here if needed
-            match session {
-                Ok(_) => godot_print!("Login successful"),
-                Err(e) => godot_print!("Login failed: {:?}", e),
-            }
+        let result = rt.block_on(async {
+            new_session(
+                Login {
+                    first: firstname_clone,
+                    last: lastname_clone,
+                    passwd: password_clone,
+                    channel: "benthic".to_string(),
+                    start: "home".to_string(),
+                    agree_to_tos: true,
+                    read_critical: true,
+                },
+                build_url(&grid_clone, 9000),
+            ).await
         });
+
+        // Handle the result
+        match result {
+            Ok(_) => {
+                godot_print!("Login successful");
+                // Emit a success signal or perform further actions
+            }
+            Err(e) => {
+                godot_print!("Login failed",);
+                // Emit an error signal or perform error handling
+            }
+        }
+              
         godot_print!("RECEIVED USERNAME {}", firstname);
         godot_print!("RECEIVED LASTNAME {}", lastname);
         godot_print!("RECEIVED GRID {}", grid);

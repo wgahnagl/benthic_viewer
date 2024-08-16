@@ -5,6 +5,3 @@ struct MetaverseGodot;
 
 #[gdextension]
 unsafe impl ExtensionLibrary for MetaverseGodot {}
-
-
-
