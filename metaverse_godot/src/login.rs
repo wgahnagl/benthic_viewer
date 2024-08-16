@@ -63,7 +63,7 @@ impl LoginButton {
                 // Emit a success signal or perform further actions
             }
             Err(e) => {
-                godot_print!("Login failed",);
+                godot_print!("Login failed {:?}", e);
                 // Emit an error signal or perform error handling
             }
         }

@@ -1696,9 +1696,9 @@ dependencies = [
 
 [[package]]
 name = "metaverse_session"
-version = "0.0.1"
+version = "0.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "909fd60ab46d0ce2a78c5258be96da23b649e79f2acef19fb4de2fa8d0b95338"
+checksum = "19ebfef388b8d9e73af447a5fc2f979164846e3851c3366ef78ea52c5348b94c"
 dependencies = [
  "actix",
  "actix-rt 2.10.0",
