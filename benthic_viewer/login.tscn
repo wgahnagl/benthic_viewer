@@ -1,15 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://ba3lsks3esx5k"]
+[gd_scene load_steps=3 format=3 uid="uid://ba3lsks3esx5k"]
 
-[ext_resource type="Script" path="res://login.gd" id="1_pf4ie"]
+[ext_resource type="Script" path="res://session.gd" id="1_0ibbf"]
+[ext_resource type="Script" path="res://button.gd" id="2_as5le"]
 
-[node name="Login" type="Control"]
-layout_mode = 3
+[node name="MetaverseSession" type="MetaverseSession"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_pf4ie")
+script = ExtResource("1_0ibbf")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -48,9 +48,9 @@ placeholder_text = "Password "
 secret = true
 secret_character = "*"
 
-[node name="Login" type="LoginButton" parent="MarginContainer/VBoxContainer"]
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Login
-"
+text = "Login"
+script = ExtResource("2_as5le")
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Login" to="." method="_on_login_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Button" to="MarginContainer/VBoxContainer/Button" method="_on_pressed"]

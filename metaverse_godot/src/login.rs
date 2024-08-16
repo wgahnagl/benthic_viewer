@@ -1,48 +1,63 @@
-use std::sync::Arc;
-use std::sync::Mutex;
-use tokio::task::JoinHandle;
-
-use godot::classes::Button;
-use godot::classes::IButton;
-use godot::prelude::*;
 use metaverse_login::models::simulator_login_protocol::Login;
-use metaverse_session::session::new_session;
+use metaverse_messages::models::client_update_data::ClientUpdateContent;
+use metaverse_messages::models::client_update_data::ClientUpdateData;
+use metaverse_messages::models::client_update_data::DataContent;
+use std::sync::Arc;
+use tokio::sync::Mutex;
+
+use godot::classes::Control;
+use godot::classes::IControl;
+use godot::prelude::*;
+use metaverse_session::session::Session;
 use tokio::runtime::Runtime;
 
 #[derive(GodotClass)]
-#[class(base=Button)]
-struct LoginButton {
-    base: Base<Button>,
+#[class(base=Control)]
+struct MetaverseSession {
+    base: Base<Control>,
+    update_stream: Option<Arc<Mutex<Vec<ClientUpdateData>>>>,
+    runtime: Runtime,
 }
 
 #[godot_api]
-impl IButton for LoginButton {
-    fn init(base: Base<Button>) -> Self {
-        Self { base }
+impl IControl for MetaverseSession {
+    fn init(base: Base<Control>) -> Self {
+        let rt = Runtime::new().expect("Failed to create Tokio runtime");
+        Self {
+            base,
+            update_stream: None,
+            runtime: rt,
+        }
     }
 }
 
 #[godot_api]
-impl LoginButton {
+impl MetaverseSession {
+    #[signal]
+    fn check_stream();
+
+    #[signal]
+    fn init_session();
+    
     #[func]
-    fn send_login(&mut self, firstname: String, lastname: String, grid: String, password: String) {
+    fn init_session(&mut self, firstname: String, lastname: String, grid: String, password: String) {
         let firstname_clone = firstname.clone();
         let lastname_clone = lastname.clone();
         let grid_clone = grid.clone();
         let password_clone = password.clone();
-        let rt = Runtime::new().expect("Failed to create Tokio runtime");
-
         let grid_clone = if grid_clone == "localhost" {
             "http://127.0.0.1".to_string()
         } else {
             grid_clone
         };
 
-        // Use an Arc and Mutex to handle the result in a blocking context
+        let grid_clone = build_url(&grid_clone, 9000);
 
-        // Spawn the async task within the runtime
-        let result = rt.block_on(async {
-            new_session(
+        let update_stream: Arc<Mutex<Vec<ClientUpdateData>>> = Arc::new(Mutex::new(Vec::new()));
+        self.update_stream = Some(update_stream.clone());
+        self.runtime.spawn(async {
+            let update_stream_clone = Arc::clone(&update_stream);
+            let result = Session::new(
                 Login {
                     first: firstname_clone,
                     last: lastname_clone,
@@ -52,30 +67,56 @@ impl LoginButton {
                     agree_to_tos: true,
                     read_critical: true,
                 },
-                build_url(&grid_clone, 9000),
-            ).await
+                grid_clone,
+                update_stream,
+            ).await;
+            match result {
+                Ok(_) => {
+                    // this never actually shows up for some reason 
+                    // I wonder if some part of the session never quits, so it awaits forever??
+                    let mut stream = update_stream_clone.lock().await;
+                    stream.push(ClientUpdateData {
+                        content: ClientUpdateContent::Data(DataContent{
+                            content: format!("Login succeeded!!!"),
+                        }),
+                    });
+                }
+                Err(e) => {
+                    let mut stream = update_stream_clone.lock().await;
+                    stream.push(ClientUpdateData {
+                        content: ClientUpdateContent::Data(DataContent{
+                            content: format!("Login failed: {:?}", e),
+                        }),
+                    });
+                }
+            }
         });
 
-        // Handle the result
-        match result {
-            Ok(_) => {
-                godot_print!("Login successful");
-                // Emit a success signal or perform further actions
-            }
-            Err(e) => {
-                godot_print!("Login failed {:?}", e);
-                // Emit an error signal or perform error handling
+
+    }
+    #[func]
+    fn check_stream(&mut self) {
+        if let Some(session) = self.update_stream.as_ref() {
+            // this is almost certainly causing some sort of deadlock
+            let stream = self.runtime.block_on(async {
+                let mut stream_lock = session.lock().await;
+                stream_lock.drain(..).collect::<Vec<_>>()
+            });
+
+            if !stream.is_empty() {
+                for update in stream {
+                    match update.content {
+                        ClientUpdateContent::Data(data) => {
+                            godot_print!("Data received: {}", data.content);
+                        }
+                        ClientUpdateContent::Packet(packet) => {
+                            godot_print!("Packet received: {:?}", packet);
+                        }
+                    }
+                }
             }
         }
-              
-        godot_print!("RECEIVED USERNAME {}", firstname);
-        godot_print!("RECEIVED LASTNAME {}", lastname);
-        godot_print!("RECEIVED GRID {}", grid);
-        godot_print!("RECEIVED PASSWORD {}", password);
     }
-
-    #[signal]
-    fn send_login();
 }
 
 fn build_url(url: &str, port: u16) -> String {
