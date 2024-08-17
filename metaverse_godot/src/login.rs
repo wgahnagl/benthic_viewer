@@ -1,3 +1,4 @@
+use actix::SystemRunner;
 use metaverse_login::models::simulator_login_protocol::Login;
 use metaverse_messages::models::client_update_data::ClientUpdateContent;
 use metaverse_messages::models::client_update_data::ClientUpdateData;
@@ -5,24 +6,24 @@ use metaverse_messages::models::client_update_data::DataContent;
 use std::sync::Arc;
 use tokio::sync::Mutex;
 
+use actix_rt::System;
 use godot::classes::Control;
 use godot::classes::IControl;
 use godot::prelude::*;
 use metaverse_session::session::Session;
-use tokio::runtime::Runtime;
 
 #[derive(GodotClass)]
 #[class(base=Control)]
 struct MetaverseSession {
     base: Base<Control>,
     update_stream: Option<Arc<Mutex<Vec<ClientUpdateData>>>>,
-    runtime: Runtime,
+    runtime: SystemRunner,
 }
 
 #[godot_api]
 impl IControl for MetaverseSession {
     fn init(base: Base<Control>) -> Self {
-        let rt = Runtime::new().expect("Failed to create Tokio runtime");
+        let rt = System::new();
         Self {
             base,
             update_stream: None,
@@ -38,9 +39,15 @@ impl MetaverseSession {
 
     #[signal]
     fn init_session();
-    
+
     #[func]
-    fn init_session(&mut self, firstname: String, lastname: String, grid: String, password: String) {
+    fn init_session(
+        &mut self,
+        firstname: String,
+        lastname: String,
+        grid: String,
+        password: String,
+    ) {
         let firstname_clone = firstname.clone();
         let lastname_clone = lastname.clone();
         let grid_clone = grid.clone();
@@ -53,10 +60,11 @@ impl MetaverseSession {
 
         let grid_clone = build_url(&grid_clone, 9000);
 
-        let update_stream: Arc<Mutex<Vec<ClientUpdateData>>> = Arc::new(Mutex::new(Vec::new()));
-        self.update_stream = Some(update_stream.clone());
-        self.runtime.spawn(async {
-            let update_stream_clone = Arc::clone(&update_stream);
+        let update_stream = Arc::new(Mutex::new(Vec::new()));
+        let update_stream_clone = update_stream.clone();
+        self.update_stream = Some(update_stream);
+        let system = System::new();
+        system.block_on(async {
             let result = Session::new(
                 Login {
                     first: firstname_clone,
@@ -68,36 +76,33 @@ impl MetaverseSession {
                     read_critical: true,
                 },
                 grid_clone,
-                update_stream,
-            ).await;
+                update_stream_clone.clone(),
+            )
+            .await;
+
             match result {
                 Ok(_) => {
-                    // this never actually shows up for some reason 
-                    // I wonder if some part of the session never quits, so it awaits forever??
                     let mut stream = update_stream_clone.lock().await;
                     stream.push(ClientUpdateData {
-                        content: ClientUpdateContent::Data(DataContent{
-                            content: format!("Login succeeded!!!"),
+                        content: ClientUpdateContent::Data(DataContent {
+                            content: format!("Login succeeded!"),
                         }),
                     });
                 }
                 Err(e) => {
                     let mut stream = update_stream_clone.lock().await;
                     stream.push(ClientUpdateData {
-                        content: ClientUpdateContent::Data(DataContent{
+                        content: ClientUpdateContent::Data(DataContent {
                             content: format!("Login failed: {:?}", e),
                         }),
                     });
                 }
             }
         });
-
-
     }
     #[func]
     fn check_stream(&mut self) {
         if let Some(session) = self.update_stream.as_ref() {
-            // this is almost certainly causing some sort of deadlock
             let stream = self.runtime.block_on(async {
                 let mut stream_lock = session.lock().await;
                 stream_lock.drain(..).collect::<Vec<_>>()

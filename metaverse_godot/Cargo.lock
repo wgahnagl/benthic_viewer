@@ -1625,6 +1625,8 @@ dependencies = [
 name = "metaverse_godot"
 version = "0.1.0"
 dependencies = [
+ "actix",
+ "actix-rt 2.10.0",
  "godot",
  "metaverse_login",
  "metaverse_messages",
