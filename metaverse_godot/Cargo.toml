@@ -10,8 +10,8 @@ crate-type = ["cdylib"]  # Compile this crate to a dynamic C library.
 godot = { git = "https://github.com/godot-rust/gdext", branch = "master" }
 
 metaverse_session = {path = "../../metaverse_client/crates/session/"}
-metaverse_login = "0.1.2"
-metaverse_messages = "0.0.1"
+metaverse_login = {path = "../../metaverse_client/crates/login/"}
+metaverse_messages = {path = "../../metaverse_client/crates/messages/"}
 actix = "0.13.5"
 actix-rt = "2.8.0"
 tokio = { version = "1.14.0", features = ["full"] }
