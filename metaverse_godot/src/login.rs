@@ -1,10 +1,9 @@
 use actix::SystemRunner;
+use godot::obj::WithBaseField;
 use metaverse_login::models::simulator_login_protocol::Login;
-use metaverse_messages::models::client_update_data::ClientUpdateContent;
 use metaverse_messages::models::client_update_data::ClientUpdateData;
-use metaverse_messages::models::client_update_data::DataContent;
 use std::sync::Arc;
-use tokio::sync::Mutex;
+use std::sync::Mutex;
 
 use actix_rt::System;
 use godot::classes::Control;
@@ -40,6 +39,9 @@ impl MetaverseSession {
     #[signal]
     fn init_session();
 
+    #[signal]
+    fn debug_message();
+
     #[func]
     fn init_session(
         &mut self,
@@ -58,11 +60,14 @@ impl MetaverseSession {
             grid_clone
         };
 
+        self.base_mut().emit_signal("debug_message".into(), &[]);
+
         let grid_clone = build_url(&grid_clone, 9000);
 
         let update_stream = Arc::new(Mutex::new(Vec::new()));
         let update_stream_clone = update_stream.clone();
         self.update_stream = Some(update_stream);
+
         let system = System::new();
         system.block_on(async {
             let result = Session::new(
@@ -82,40 +87,45 @@ impl MetaverseSession {
 
             match result {
                 Ok(_) => {
-                    let mut stream = update_stream_clone.lock().await;
-                    stream.push(ClientUpdateData {
-                        content: ClientUpdateContent::Data(DataContent {
-                            content: format!("Login succeeded!"),
-                        }),
-                    });
+                    godot_print!("Login succeeded!");
                 }
-                Err(e) => {
-                    let mut stream = update_stream_clone.lock().await;
-                    stream.push(ClientUpdateData {
-                        content: ClientUpdateContent::Data(DataContent {
-                            content: format!("Login failed: {:?}", e),
-                        }),
-                    });
+                Err(_) => {
+                    godot_print!("Login failed");
                 }
             }
         });
     }
+
     #[func]
     fn check_stream(&mut self) {
         if let Some(session) = self.update_stream.as_ref() {
-            let stream = self.runtime.block_on(async {
-                let mut stream_lock = session.lock().await;
+            let stream = {
+                let mut stream_lock = session.lock().unwrap();
                 stream_lock.drain(..).collect::<Vec<_>>()
-            });
+            };
 
             if !stream.is_empty() {
                 for update in stream {
-                    match update.content {
-                        ClientUpdateContent::Data(data) => {
-                            godot_print!("Data received: {}", data.content);
+                    match update {
+                        ClientUpdateData::String(data) => {
+                            godot_print!("Data received: {}", data);
+                            self.base_mut().emit_signal("debug_message".into(), &[]);
                         }
-                        ClientUpdateContent::Packet(packet) => {
+                        ClientUpdateData::Packet(packet) => {
                             godot_print!("Packet received: {:?}", packet);
+                            self.base_mut().emit_signal("debug_message".into(), &[]);
+                        }
+                        ClientUpdateData::LoginProgress(login) => {
+                            godot_print!(
+                                "Login process at: {:?}, {:?}",
+                                login.message,
+                                login.percent
+                            );
+                            self.base_mut().emit_signal("debug_message".into(), &[]);
+                        }
+                        ClientUpdateData::Error(error) => {
+                            godot_print!("Error received: {:?}", error);
+                            self.base_mut().emit_signal("debug_message".into(), &[]);
                         }
                     }
                 }
