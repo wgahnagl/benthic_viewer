@@ -40,7 +40,10 @@ impl MetaverseSession {
     fn init_session();
 
     #[signal]
-    fn debug_message();
+    fn debug_message(&self, message_type:String, message:String);
+
+    #[signal]
+    fn client_update(&self, message_type: String, message: String);
 
     #[func]
     fn init_session(
@@ -60,10 +63,11 @@ impl MetaverseSession {
             grid_clone
         };
 
-        self.base_mut().emit_signal("debug_message".into(), &[]);
+        self.base_mut().emit_signal("debug_message".into(), &["String".to_variant(), "string2".to_variant()]);
 
         let grid_clone = build_url(&grid_clone, 9000);
 
+        self.base_mut().emit_signal("client_update".into(), &["String".to_variant(), "string2".to_variant()]);
         let update_stream = Arc::new(Mutex::new(Vec::new()));
         let update_stream_clone = update_stream.clone();
         self.update_stream = Some(update_stream);
@@ -109,11 +113,11 @@ impl MetaverseSession {
                     match update {
                         ClientUpdateData::String(data) => {
                             godot_print!("Data received: {}", data);
-                            self.base_mut().emit_signal("debug_message".into(), &[]);
+                            self.base_mut().emit_signal("client_update".into(), &["String".to_variant(), data.to_variant()]);
                         }
                         ClientUpdateData::Packet(packet) => {
                             godot_print!("Packet received: {:?}", packet);
-                            self.base_mut().emit_signal("debug_message".into(), &[]);
+                            self.base_mut().emit_signal("client_update".into(), &["Packet".to_variant(), format!("{:?}", packet).to_variant()]);
                         }
                         ClientUpdateData::LoginProgress(login) => {
                             godot_print!(
@@ -121,11 +125,13 @@ impl MetaverseSession {
                                 login.message,
                                 login.percent
                             );
-                            self.base_mut().emit_signal("debug_message".into(), &[]);
+                            // since you can't use the login message, check the percent for 100 to
+                            // verify login success
+                            self.base_mut().emit_signal("client_update".into(), &["LoginProgress".to_variant(), format!("{:?}", login.percent).to_variant()]);
                         }
                         ClientUpdateData::Error(error) => {
                             godot_print!("Error received: {:?}", error);
-                            self.base_mut().emit_signal("debug_message".into(), &[]);
+                            self.base_mut().emit_signal("client_update".into(), &["Error".to_variant(), format!("{:?}", error).to_variant()]);
                         }
                     }
                 }
