@@ -1,25 +1,39 @@
 extends MetaverseSession
 
-var thread : Thread
-var is_running : bool = false
+var firstname = ""
+var lastname = ""
+var password = ""
+var grid = ""
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	is_running = true
-	thread = Thread.new()
-	connect("debug_message", _on_debug_message)
-	thread.start(_check_stream)
+func set_login_values(f, l, p, g):
+	firstname = f
+	lastname = l
+	password = p
+	grid = g
 
-func _on_debug_message():
-	print("Debug message!!!")
+func get_login_values() -> Array:
+	return [firstname, lastname, password, grid]
 
-# This function will run in a separate thread.
-func _check_stream(user_data):
-	while is_running:
-		check_stream()
-		OS.delay_msec(500)  # Delay for 500 milliseconds
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void: 
+	check_stream() 
 
-# Called when the node is removed from the scene tree.
-func _exit_tree():
-	is_running = false
-	thread.wait_to_finish()  # Ensure the thread has stopped before exiting
+func switch_to_scene(scene_path: String) -> void:
+	# Remove the current scene if it exists
+	if has_node("CurrentScene"):
+		var current_scene = get_node("CurrentScene")
+		remove_child(current_scene)
+		current_scene.queue_free()  
+		
+	var scene_resource = load(scene_path) 
+	if scene_resource:
+		var new_scene = scene_resource.instantiate()
+		add_child(new_scene)
+		new_scene.name = "CurrentScene"
+	else:
+		print("Failed to load scene from path: ")
+
+
+func _ready() -> void:
+	switch_to_scene("res://login.tscn")
+	
