@@ -1,34 +1,32 @@
-[gd_scene load_steps=3 format=3 uid="uid://ba3lsks3esx5k"]
+[gd_scene load_steps=2 format=3 uid="uid://djt3j66e2by1k"]
 
-[ext_resource type="Script" path="res://session.gd" id="1_0ibbf"]
 [ext_resource type="Script" path="res://button.gd" id="2_as5le"]
 
-[node name="MetaverseSession" type="MetaverseSession"]
+[node name="Login" type="Control"]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_0ibbf")
+size_flags_horizontal = 4
+size_flags_vertical = 8
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
+anchors_preset = 9
 anchor_bottom = 1.0
-offset_top = -214.0
-offset_right = 313.0
-grow_vertical = 0
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
+offset_right = 234.0
+grow_vertical = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 8
-theme_override_constants/separation = 30
-alignment = 2
+theme_override_constants/separation = 20
 
 [node name="firstname" type="LineEdit" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -38,19 +36,76 @@ placeholder_text = "First Name"
 layout_mode = 2
 placeholder_text = "Last Name"
 
-[node name="Grid" type="LineEdit" parent="MarginContainer/VBoxContainer"]
+[node name="password" type="LineEdit" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "Password"
+secret = true
+
+[node name="grid" type="LineEdit" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 placeholder_text = "Grid"
-
-[node name="Password" type="LineEdit" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-placeholder_text = "Password "
-secret = true
-secret_character = "*"
 
 [node name="Button" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Login"
 script = ExtResource("2_as5le")
+
+[node name="Loading" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -110.0
+offset_right = 200.0
+offset_bottom = 110.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.241156, 0.241156, 0.241156, 1)
+
+[node name="Label" type="Label" parent="Loading"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -70.0
+offset_top = -21.0
+offset_right = 70.0
+offset_bottom = 21.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 30
+text = "Loading..."
+
+[node name="ErrorBox" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -110.0
+offset_right = 200.0
+offset_bottom = 110.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.241156, 0.241156, 0.241156, 1)
+
+[node name="Error" type="RichTextLabel" parent="ErrorBox"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "error
+"
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Button" to="MarginContainer/VBoxContainer/Button" method="_on_pressed"]
