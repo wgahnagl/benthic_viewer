@@ -11,22 +11,24 @@ use godot::classes::IControl;
 use godot::prelude::*;
 use metaverse_session::session::Session;
 
-#[derive(GodotClass)]
+#[derive(GodotClass, Debug)]
 #[class(base=Control)]
 struct MetaverseSession {
     base: Base<Control>,
-    update_stream: Option<Arc<Mutex<Vec<ClientUpdateData>>>>,
+    update_stream: Arc<Mutex<Vec<ClientUpdateData>>>,
     runtime: SystemRunner,
 }
 
 #[godot_api]
 impl IControl for MetaverseSession {
     fn init(base: Base<Control>) -> Self {
-        let rt = System::new();
+        let runtime = System::new();
+        let update_stream = Arc::new(Mutex::new(Vec::new()));
+        godot_print!("INITIALIZING METAVERSE SESSION");
         Self {
             base,
-            update_stream: None,
-            runtime: rt,
+            update_stream,
+            runtime,
         }
     }
 }
@@ -40,7 +42,7 @@ impl MetaverseSession {
     fn init_session();
 
     #[signal]
-    fn debug_message(&self, message_type:String, message:String);
+    fn debug_message(&self, message_type: String, message: String);
 
     #[signal]
     fn client_update(&self, message_type: String, message: String);
@@ -63,17 +65,20 @@ impl MetaverseSession {
             grid_clone
         };
 
-        self.base_mut().emit_signal("debug_message".into(), &["String".to_variant(), "string2".to_variant()]);
+        self.base_mut().emit_signal(
+            "debug_message".into(),
+            &["String".to_variant(), "string2".to_variant()],
+        );
 
         let grid_clone = build_url(&grid_clone, 9000);
 
-        self.base_mut().emit_signal("client_update".into(), &["String".to_variant(), "string2".to_variant()]);
-        let update_stream = Arc::new(Mutex::new(Vec::new()));
-        let update_stream_clone = update_stream.clone();
-        self.update_stream = Some(update_stream);
+        self.base_mut().emit_signal(
+            "client_update".into(),
+            &["String".to_variant(), "string2".to_variant()],
+        );
+        let update_stream_clone = self.update_stream.clone();
 
-        let system = System::new();
-        system.block_on(async {
+        self.runtime.block_on(async {
             let result = Session::new(
                 Login {
                     first: firstname_clone,
@@ -102,37 +107,53 @@ impl MetaverseSession {
 
     #[func]
     fn check_stream(&mut self) {
-        if let Some(session) = self.update_stream.as_ref() {
-            let stream = {
-                let mut stream_lock = session.lock().unwrap();
-                stream_lock.drain(..).collect::<Vec<_>>()
-            };
+        let stream = {
+            let mut stream_lock = self.update_stream.lock().unwrap();
+            stream_lock.drain(..).collect::<Vec<_>>()
+        };
 
-            if !stream.is_empty() {
-                for update in stream {
-                    match update {
-                        ClientUpdateData::String(data) => {
-                            godot_print!("Data received: {}", data);
-                            self.base_mut().emit_signal("client_update".into(), &["String".to_variant(), data.to_variant()]);
-                        }
-                        ClientUpdateData::Packet(packet) => {
-                            godot_print!("Packet received: {:?}", packet);
-                            self.base_mut().emit_signal("client_update".into(), &["Packet".to_variant(), format!("{:?}", packet).to_variant()]);
-                        }
-                        ClientUpdateData::LoginProgress(login) => {
-                            godot_print!(
-                                "Login process at: {:?}, {:?}",
-                                login.message,
-                                login.percent
-                            );
-                            // since you can't use the login message, check the percent for 100 to
-                            // verify login success
-                            self.base_mut().emit_signal("client_update".into(), &["LoginProgress".to_variant(), format!("{:?}", login.percent).to_variant()]);
-                        }
-                        ClientUpdateData::Error(error) => {
-                            godot_print!("Error received: {:?}", error);
-                            self.base_mut().emit_signal("client_update".into(), &["Error".to_variant(), format!("{:?}", error).to_variant()]);
-                        }
+        if !stream.is_empty() {
+            for update in stream {
+                match update {
+                    ClientUpdateData::String(data) => {
+                        godot_print!("Data received: {}", data);
+                        self.base_mut().emit_signal(
+                            "client_update".into(),
+                            &["String".to_variant(), data.to_variant()],
+                        );
+                    }
+                    ClientUpdateData::Packet(packet) => {
+                        godot_print!("Packet received: {:?}", packet);
+                        self.base_mut().emit_signal(
+                            "client_update".into(),
+                            &["Packet".to_variant(), format!("{:?}", packet).to_variant()],
+                        );
+                    }
+                    ClientUpdateData::LoginProgress(login) => {
+                        godot_print!("Login process at: {:?}, {:?}", login.message, login.percent);
+                        // since you can't use the login message, check the percent for 100 to
+                        // verify login success
+                        self.base_mut().emit_signal(
+                            "client_update".into(),
+                            &[
+                                "LoginProgress".to_variant(),
+                                format!("{:?}", login.percent).to_variant(),
+                            ],
+                        );
+                    }
+                    ClientUpdateData::Error(error) => {
+                        godot_print!("Error received: {:?}", error);
+                        self.base_mut().emit_signal(
+                            "client_update".into(),
+                            &["Error".to_variant(), format!("{:?}", error).to_variant()],
+                        );
+                    }
+                    ClientUpdateData::ChatFromSimulator(chat) => {
+                        godot_print!("Chat received: {:?}", chat);
+                        self.base_mut().emit_signal(
+                            "client_update".into(),
+                            &["Chat".to_variant(), format!("{:?}", chat).to_variant()],
+                        );
                     }
                 }
             }

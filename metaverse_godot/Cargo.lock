@@ -1628,6 +1628,7 @@ dependencies = [
  "actix",
  "actix-rt 2.10.0",
  "godot",
+ "lazy_static",
  "metaverse_login",
  "metaverse_messages",
  "metaverse_session",

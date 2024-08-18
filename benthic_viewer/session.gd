@@ -49,5 +49,7 @@ func _on_client_update(message_type: String, message: String):
 		"Error":
 			print("Error received: ", message)
 			loginError = message
+		"Chat": 
+			print("Chat received: ", message)
 		_:
 			print("Unknown message type")
