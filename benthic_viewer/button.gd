@@ -21,8 +21,6 @@ func _on_pressed() -> void:
 	metaverse_session.init_session(firstname, lastname, grid, password)
 	loading.visible = false
 	
-	metaverse_session.check_stream()
-	
 	var login_status = metaverse_session.get_login_status()
 	if login_status[0] : 
 		metaverse_session.switch_to_scene("res://chat.tscn")

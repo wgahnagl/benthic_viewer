@@ -1690,6 +1690,7 @@ dependencies = [
  "hex",
  "metaverse_utils",
  "nalgebra",
+ "rand 0.8.5",
  "tokio 1.39.2",
  "uuid",
 ]

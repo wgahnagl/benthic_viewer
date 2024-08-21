@@ -1,4 +1,5 @@
 use actix::SystemRunner;
+use godot::classes::ResourceLoader;
 use godot::obj::WithBaseField;
 use metaverse_login::models::simulator_login_protocol::Login;
 use metaverse_messages::models::client_update_data::ClientUpdateData;
@@ -15,37 +16,96 @@ use metaverse_session::session::Session;
 #[class(base=Control)]
 struct MetaverseSession {
     base: Base<Control>,
-    update_stream: Arc<Mutex<Vec<ClientUpdateData>>>,
     runtime: SystemRunner,
+    session: Option<Session>,
+    current_scene: NodePath, 
 }
 
 #[godot_api]
 impl IControl for MetaverseSession {
     fn init(base: Base<Control>) -> Self {
         let runtime = System::new();
-        let update_stream = Arc::new(Mutex::new(Vec::new()));
         godot_print!("INITIALIZING METAVERSE SESSION");
         Self {
             base,
-            update_stream,
             runtime,
+            session: None,
+            current_scene: "res://res://login.tscn".into()
         }
     }
+
+    fn process(&mut self, _: f64) {
+        if let Some(session) = &self.session {
+            let mut stream = session.update_stream.lock().unwrap();
+            if !stream.is_empty() {
+                for update in stream.drain(..) {
+                    match update {
+                        ClientUpdateData::Packet(packet) => {
+                            godot_print!("Packet received: {:?}", packet);
+                        }
+                        ClientUpdateData::String(string) => {
+                            godot_print!("String received: {:?}", string)
+                        }
+                        ClientUpdateData::Error(error) => {
+                            godot_print!("Error received: {:?}", error);
+                        }
+                        ClientUpdateData::LoginProgress(login) => {
+                            godot_print!("Login Progress received!!! {:?}", login)
+                        }
+                        ClientUpdateData::ChatFromSimulator(chat) => {
+                            godot_print!("Chat received {:?}", chat)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fn ready (&mut self ){
+        self.switch_to_scene("res://login.tscn".into());
+
+    }
 }
+
 
 #[godot_api]
 impl MetaverseSession {
     #[signal]
-    fn check_stream();
-
-    #[signal]
     fn init_session();
 
-    #[signal]
-    fn debug_message(&self, message_type: String, message: String);
+    #[func]
+    fn switch_to_scene(&mut self, scene_path: String){
+        godot_print!("Switching scene to {:?}", scene_path);
+        let current_scene_clone  = self.current_scene.clone();
+        self.base_mut().get_node_or_null(current_scene_clone.clone());
+        let current_scene = self.base().get_node_or_null(self.current_scene.clone());
 
-    #[signal]
-    fn client_update(&self, message_type: String, message: String);
+        // If there's a current scene, remove it.
+        if let Some(mut current_scene) = current_scene {
+            self.base_mut().remove_child(current_scene.clone());
+            current_scene.queue_free();
+        }
+        
+        let scene_resource = ResourceLoader::singleton().load(scene_path.into());
+
+        if let Some(scene) = scene_resource {
+            let packed_scene = scene.cast::<PackedScene>();
+
+                // Instantiate the new scene
+                if let Some(mut new_scene) = packed_scene.instantiate() {
+                    // Add the new scene as a child
+                    self.base_mut().add_child(new_scene.clone());
+
+                    // Name the new scene as "CurrentScene"
+                    new_scene.set_name("CurrentScene".into());
+                } else {
+                    godot_error!("Failed to instantiate the scene");
+                }
+            } else {
+                godot_error!("Failed to cast to PackedScene");
+            }
+        }
+
 
     #[func]
     fn init_session(
@@ -72,11 +132,7 @@ impl MetaverseSession {
 
         let grid_clone = build_url(&grid_clone, 9000);
 
-        self.base_mut().emit_signal(
-            "client_update".into(),
-            &["String".to_variant(), "string2".to_variant()],
-        );
-        let update_stream_clone = self.update_stream.clone();
+        let update_stream = Arc::new(Mutex::new(Vec::new()));
 
         self.runtime.block_on(async {
             let result = Session::new(
@@ -90,12 +146,12 @@ impl MetaverseSession {
                     read_critical: true,
                 },
                 grid_clone,
-                update_stream_clone.clone(),
+                update_stream.clone(),
             )
             .await;
-
             match result {
-                Ok(_) => {
+                Ok(session) => {
+                    self.session = Some(session);
                     godot_print!("Login succeeded!");
                 }
                 Err(_) => {
@@ -103,61 +159,9 @@ impl MetaverseSession {
                 }
             }
         });
-    }
 
-    #[func]
-    fn check_stream(&mut self) {
-        let stream = {
-            let mut stream_lock = self.update_stream.lock().unwrap();
-            stream_lock.drain(..).collect::<Vec<_>>()
-        };
-
-        if !stream.is_empty() {
-            for update in stream {
-                match update {
-                    ClientUpdateData::String(data) => {
-                        godot_print!("Data received: {}", data);
-                        self.base_mut().emit_signal(
-                            "client_update".into(),
-                            &["String".to_variant(), data.to_variant()],
-                        );
-                    }
-                    ClientUpdateData::Packet(packet) => {
-                        godot_print!("Packet received: {:?}", packet);
-                        self.base_mut().emit_signal(
-                            "client_update".into(),
-                            &["Packet".to_variant(), format!("{:?}", packet).to_variant()],
-                        );
-                    }
-                    ClientUpdateData::LoginProgress(login) => {
-                        godot_print!("Login process at: {:?}, {:?}", login.message, login.percent);
-                        // since you can't use the login message, check the percent for 100 to
-                        // verify login success
-                        self.base_mut().emit_signal(
-                            "client_update".into(),
-                            &[
-                                "LoginProgress".to_variant(),
-                                format!("{:?}", login.percent).to_variant(),
-                            ],
-                        );
-                    }
-                    ClientUpdateData::Error(error) => {
-                        godot_print!("Error received: {:?}", error);
-                        self.base_mut().emit_signal(
-                            "client_update".into(),
-                            &["Error".to_variant(), format!("{:?}", error).to_variant()],
-                        );
-                    }
-                    ClientUpdateData::ChatFromSimulator(chat) => {
-                        godot_print!("Chat received: {:?}", chat);
-                        self.base_mut().emit_signal(
-                            "client_update".into(),
-                            &["Chat".to_variant(), format!("{:?}", chat).to_variant()],
-                        );
-                    }
-                }
-            }
-        }
+        // this should only be done on success
+        self.switch_to_scene("res://chat.tscn".into());
     }
 }
 
