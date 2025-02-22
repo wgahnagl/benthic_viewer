@@ -7,11 +7,14 @@ edition = "2021"
 crate-type = ["cdylib"]  # Compile this crate to a dynamic C library.
 
 [dependencies]
-godot = { git = "https://github.com/godot-rust/gdext", branch = "master" }
-
-metaverse_session = {path = "../../metaverse_client/crates/session/"}
-metaverse_login = {path = "../../metaverse_client/crates/login/"}
-metaverse_messages = {path = "../../metaverse_client/crates/messages/"}
 actix = "0.13.5"
-actix-rt = "2.8.0"
+actix-rt = "2.10.0"
+crossbeam = "0.8.4"
+crossbeam-channel = "0.5.14"
+godot = "0.2.3"
+log = "0.4.26"
+
+metaverse_messages = {path = "../../metaverse_client/crates/messages/"}
+metaverse_session = {path = "../../metaverse_client/crates/session/"}
+tempfile = "3.17.1"
 tokio = { version = "1.14.0", features = ["full"] }

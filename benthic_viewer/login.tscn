@@ -12,7 +12,7 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="LoginScreen" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -23,29 +23,29 @@ theme_override_constants/margin_top = 30
 theme_override_constants/margin_right = 30
 theme_override_constants/margin_bottom = 30
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="LoginContainer" type="VBoxContainer" parent="LoginScreen"]
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_constants/separation = 20
 
-[node name="firstname" type="LineEdit" parent="MarginContainer/VBoxContainer"]
+[node name="firstname" type="LineEdit" parent="LoginScreen/LoginContainer"]
 layout_mode = 2
 placeholder_text = "First Name"
 
-[node name="lastname" type="LineEdit" parent="MarginContainer/VBoxContainer"]
+[node name="lastname" type="LineEdit" parent="LoginScreen/LoginContainer"]
 layout_mode = 2
 placeholder_text = "Last Name"
 
-[node name="password" type="LineEdit" parent="MarginContainer/VBoxContainer"]
+[node name="password" type="LineEdit" parent="LoginScreen/LoginContainer"]
 layout_mode = 2
 placeholder_text = "Password"
 secret = true
 
-[node name="grid" type="LineEdit" parent="MarginContainer/VBoxContainer"]
+[node name="grid" type="LineEdit" parent="LoginScreen/LoginContainer"]
 layout_mode = 2
 placeholder_text = "Grid"
 
-[node name="Button" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="Button" type="Button" parent="LoginScreen/LoginContainer"]
 layout_mode = 2
 text = "Login"
 script = ExtResource("2_as5le")
@@ -53,15 +53,9 @@ script = ExtResource("2_as5le")
 [node name="Loading" type="ColorRect" parent="."]
 visible = false
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = -110.0
-offset_right = 200.0
-offset_bottom = 110.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.241156, 0.241156, 0.241156, 1)
@@ -82,30 +76,21 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 30
 text = "Loading..."
 
-[node name="ErrorBox" type="ColorRect" parent="."]
-visible = false
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = -110.0
-offset_right = 200.0
-offset_bottom = 110.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.241156, 0.241156, 0.241156, 1)
+[node name="ErrorBox" type="AcceptDialog" parent="."]
+title = "Login Failed"
+initial_position = 2
+size = Vector2i(300, 200)
 
 [node name="Error" type="RichTextLabel" parent="ErrorBox"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 292.0
+offset_bottom = 151.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 text = "error
 "
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Button" to="MarginContainer/VBoxContainer/Button" method="_on_pressed"]
+[connection signal="pressed" from="LoginScreen/LoginContainer/Button" to="LoginScreen/LoginContainer/Button" method="_on_pressed"]

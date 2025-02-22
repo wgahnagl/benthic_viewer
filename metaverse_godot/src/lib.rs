@@ -1,4 +1,4 @@
-pub mod login;
+pub mod session;
 use godot::prelude::*;
 
 struct MetaverseGodot;
