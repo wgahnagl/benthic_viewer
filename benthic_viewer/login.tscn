@@ -1,5 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://djt3j66e2by1k"]
+[gd_scene load_steps=3 format=3 uid="uid://djt3j66e2by1k"]
 
+[ext_resource type="Script" path="res://login.gd" id="1_ge2ka"]
 [ext_resource type="Script" path="res://button.gd" id="2_as5le"]
 
 [node name="Login" type="Control"]
@@ -22,6 +23,7 @@ theme_override_constants/margin_left = 30
 theme_override_constants/margin_top = 30
 theme_override_constants/margin_right = 30
 theme_override_constants/margin_bottom = 30
+script = ExtResource("1_ge2ka")
 
 [node name="LoginContainer" type="VBoxContainer" parent="LoginScreen"]
 layout_mode = 2
@@ -76,21 +78,18 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 30
 text = "Loading..."
 
-[node name="ErrorBox" type="AcceptDialog" parent="."]
-title = "Login Failed"
-initial_position = 2
-size = Vector2i(300, 200)
+[node name="VBoxContainer" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_left = 256.0
+offset_top = 192.0
+offset_right = 896.0
+offset_bottom = 387.0
 
-[node name="Error" type="RichTextLabel" parent="ErrorBox"]
-offset_left = 8.0
-offset_top = 8.0
-offset_right = 292.0
-offset_bottom = 151.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-text = "error
-"
+[node name="Error" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
 
 [connection signal="pressed" from="LoginScreen/LoginContainer/Button" to="LoginScreen/LoginContainer/Button" method="_on_pressed"]

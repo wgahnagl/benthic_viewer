@@ -1,4 +1,5 @@
 extends MetaverseSession 
+@onready var metaverse_session = get_tree().root.get_node("MetaverseSession") 
 
 # on ready, set the current scene to login
 func _ready() -> void:
