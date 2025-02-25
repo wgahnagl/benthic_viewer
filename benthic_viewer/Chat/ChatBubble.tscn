@@ -1,0 +1,34 @@
+[gd_scene load_steps=3 format=3 uid="uid://c2ukd0svvkicv"]
+
+[ext_resource type="Script" path="res://Chat/Scripts/ChatBubble.gd" id="1_6dl3x"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lc4fa"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.187176, 0.187176, 0.187176, 1)
+corner_radius_top_left = 20
+corner_radius_bottom_right = 20
+
+[node name="ChatBubble" type="PanelContainer" node_paths=PackedStringArray("chat_panel", "message_label")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -988.0
+offset_bottom = -605.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_lc4fa")
+script = ExtResource("1_6dl3x")
+chat_panel = NodePath(".")
+message_label = NodePath("Message")
+
+[node name="Message" type="Label" parent="."]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Message"
+autowrap_mode = 3

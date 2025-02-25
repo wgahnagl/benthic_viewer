@@ -1,6 +1,6 @@
 extends Button
 @onready var metaverse_session = get_tree().root.get_node("MetaverseSession") 
+@onready var chat = get_tree().root.get_node("MetaverseSession/Chat") 
 
 func _on_pressed() -> void:
-	var chat = $"../ChatBox".text
-	metaverse_session.send_chat(chat)
+	chat.send_message()

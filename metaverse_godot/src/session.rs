@@ -9,6 +9,7 @@ use godot::classes::Control;
 use godot::classes::IControl;
 use godot::obj::WithBaseField;
 use godot::prelude::*;
+use metaverse_messages::chat_from_simulator::ChatType;
 use metaverse_messages::chat_from_viewer::ChatFromViewer;
 use metaverse_messages::chat_from_viewer::ClientChatType;
 use metaverse_messages::errors::SessionError;
@@ -80,10 +81,10 @@ impl IControl for MetaverseSession {
         while let Ok(event) = self.receiver.try_recv() {
             match event {
                 PacketType::LoginResponse(login_response) => {
-                        self.base_mut().emit_signal(
-                            &StringName::from("login_response"),
-                            &["Success".to_variant(), "".to_variant()],
-                        );
+                    self.base_mut().emit_signal(
+                        &StringName::from("login_response"),
+                        &["Success".to_variant(), "".to_variant()],
+                    );
                     self.login_response = Some(*login_response);
                 }
                 PacketType::CoarseLocationUpdate(coarse_location_update) => {
@@ -113,15 +114,21 @@ impl IControl for MetaverseSession {
                 },
                 PacketType::ChatFromSimulator(chat) => {
                     let mut chat_from_self = false;
-                    if Some(chat.owner_id) == self.login_response.clone().unwrap().agent_id{
-                        chat_from_self = true;
+                    if matches!(chat.chat_type, ChatType::StartTyping | ChatType::StopTyping) {
+                        godot_print!("{:?} is typing...", chat.from_name);
+                    } else {
+                        if Some(chat.owner_id) == self.login_response.clone().unwrap().agent_id {
+                            chat_from_self = true;
+                        }
+                        self.base_mut().emit_signal(
+                            &StringName::from("chat_from_simulator"),
+                            &[
+                                chat.from_name.to_string().to_variant(),
+                                chat.message.to_string().to_variant(),
+                                chat_from_self.to_variant(),
+                            ],
+                        );
                     }
-                    self.base_mut().emit_signal(
-                        &StringName::from("chat_from_simulator"),
-                        &[chat.from_name.to_string().to_variant(),
-                        chat.message.to_string().to_variant(),
-                        chat_from_self.to_variant()]
-                    );
                 }
                 _ => {
                     godot_error!("not implemented yet")
@@ -137,14 +144,14 @@ impl MetaverseSession {
     fn login_response(&self, message_type: String, message: String);
 
     #[signal]
-    fn chat_from_simulator(&self, user:String, message:String, chat_from_self: bool);
+    fn chat_from_simulator(&self, user: String, message: String, chat_from_self: bool);
 
     #[func]
     fn login(&self, first: String, last: String, passwd: String, url: String) {
         let url = if url == "localhost" {
             format!("{}:{}", "http://127.0.0.1", 9000)
         } else {
-            format!("http://{}:{}", url, 9000)
+            url
         };
 
         let packet = Packet::new_login_packet(Login {
@@ -166,15 +173,16 @@ impl MetaverseSession {
     }
 
     #[func]
-    fn send_chat(&self, message:String) {
+    fn send_chat(&self, message: String) {
         let login_response_clone = self.login_response.clone().unwrap();
-        let packet = Packet::new_chat_from_viewer(ChatFromViewer{
+        let packet = Packet::new_chat_from_viewer(ChatFromViewer {
             agent_id: login_response_clone.agent_id.unwrap(),
             session_id: login_response_clone.session_id.unwrap(),
             message_type: ClientChatType::Normal,
             channel: 0,
-            message
-        }).to_bytes();
+            message,
+        })
+        .to_bytes();
         let client_socket = UnixDatagram::unbound().unwrap();
         match client_socket.send_to(&packet, &self.ui_to_server_socket) {
             Ok(_) => godot_print!("Chat sent from UI"),
@@ -182,4 +190,3 @@ impl MetaverseSession {
         };
     }
 }
-
