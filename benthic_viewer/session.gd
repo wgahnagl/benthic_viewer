@@ -3,7 +3,7 @@ extends MetaverseSession
 
 # on ready, set the current scene to login
 func _ready() -> void:
-		switch_to_scene("res://login.tscn")
+		switch_to_scene("res://Login/login.tscn")
 		
 func switch_to_scene(scene_path: String) -> void:
 	# Remove the current scene if it exists
