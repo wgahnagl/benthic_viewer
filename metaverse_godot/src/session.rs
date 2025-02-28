@@ -1,6 +1,4 @@
-use std::os::unix::net::UnixDatagram;
-use std::path::PathBuf;
-
+use std::net::UdpSocket;
 use actix_rt::Runtime;
 use actix_rt::System;
 use crossbeam::channel::unbounded;
@@ -19,7 +17,7 @@ use metaverse_messages::packet::Packet;
 use metaverse_messages::packet_types::PacketType;
 use metaverse_session::client_subscriber::listen_for_server_events;
 use metaverse_session::initialize::initialize;
-use tempfile::NamedTempFile;
+use portpicker::pick_unused_port;
 
 #[derive(GodotClass)]
 #[class(base=Control)]
@@ -27,27 +25,18 @@ struct MetaverseSession {
     receiver: Receiver<PacketType>,
     base: Base<Control>,
     login_response: Option<LoginResponse>,
-    ui_to_server_socket: PathBuf,
+    ui_to_server_socket: String,
 }
 
 #[godot_api]
 impl IControl for MetaverseSession {
     fn init(base: Base<Control>) -> Self {
-        // create temporary files
-        let ui_to_server_socket = NamedTempFile::new()
-            .expect("Failed to create temp file")
-            .path()
-            .to_path_buf();
-        let server_to_ui_socket = NamedTempFile::new()
-            .expect("Failed to create temp file")
-            .path()
-            .to_path_buf();
-        let server_to_ui_socket_clone = server_to_ui_socket.clone();
-        let ui_to_server_socket_clone = ui_to_server_socket.clone();
+        let ui_to_server_socket = pick_unused_port().unwrap();
+        let server_to_ui_socket = pick_unused_port().unwrap();
 
         let (sender, receiver) = unbounded();
         // start the actix process, and do not close the system until everything is finished
-        std::thread::spawn(|| {
+        std::thread::spawn(move || {
             System::new().block_on(async {
                 match initialize(ui_to_server_socket, server_to_ui_socket).await {
                     Ok(handle) => {
@@ -63,16 +52,16 @@ impl IControl for MetaverseSession {
             });
         });
 
-        std::thread::spawn(|| {
+        std::thread::spawn(move || {
             let rt = Runtime::new().unwrap();
-            rt.block_on(async { listen_for_server_events(server_to_ui_socket_clone, sender).await })
+            rt.block_on(async { listen_for_server_events( format!("127.0.0.1:{}", server_to_ui_socket), sender).await })
         });
 
         godot_print!("metaverse session started");
         Self {
             base,
             receiver,
-            ui_to_server_socket: ui_to_server_socket_clone,
+            ui_to_server_socket:  format!("127.0.0.1:{}", ui_to_server_socket),
             login_response: None,
         }
     }
@@ -165,7 +154,7 @@ impl MetaverseSession {
             start: "home".to_string(),
         })
         .to_bytes();
-        let client_socket = UnixDatagram::unbound().unwrap();
+        let client_socket = UdpSocket::bind("0.0.0.0:0").unwrap();
         match client_socket.send_to(&packet, &self.ui_to_server_socket) {
             Ok(_) => godot_print!("Login sent from UI"),
             Err(e) => godot_print!("Error sending login from UI {:?}", e),
@@ -183,8 +172,8 @@ impl MetaverseSession {
             message,
         })
         .to_bytes();
-        let client_socket = UnixDatagram::unbound().unwrap();
-        match client_socket.send_to(&packet, &self.ui_to_server_socket) {
+        let client_socket = UdpSocket::bind("0.0.0.0:0").unwrap();
+        match client_socket.send_to(&packet,  &self.ui_to_server_socket) {
             Ok(_) => godot_print!("Chat sent from UI"),
             Err(e) => godot_print!("Error sending chat from UI {:?}", e),
         };
