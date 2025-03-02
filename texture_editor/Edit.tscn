@@ -1,0 +1,357 @@
+[gd_scene load_steps=10 format=3 uid="uid://dalciw7io7v7l"]
+
+[ext_resource type="Script" path="res://LoadButton.gd" id="1_ti2g8"]
+[ext_resource type="Script" path="res://canvas.gd" id="1_xtuf2"]
+[ext_resource type="Script" path="res://save_image.gd" id="2_ns6bw"]
+[ext_resource type="Script" path="res://Clear.gd" id="4_4lync"]
+[ext_resource type="PackedScene" uid="uid://c2pvv6jfm0a5p" path="res://player_models/Avatar.tscn" id="4_cv5l7"]
+[ext_resource type="Script" path="res://canvas_layer.gd" id="5_2qexi"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gi06h"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b84g8"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_mvc5d"]
+
+[node name="Control" type="TextureEdit"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Tools" type="PanelContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.33
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/Tools"]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/HBoxContainer/Tools/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/Tools/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "eraser
+"
+
+[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/Tools/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "pen
+"
+
+[node name="Button3" type="Button" parent="MarginContainer/HBoxContainer/Tools/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "line
+"
+
+[node name="Button4" type="Button" parent="MarginContainer/HBoxContainer/Tools/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "stamp
+"
+
+[node name="Button5" type="Button" parent="MarginContainer/HBoxContainer/Tools/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Load
+"
+flat = true
+script = ExtResource("1_ti2g8")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/Tools/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MenuButton" type="MenuButton" parent="MarginContainer/HBoxContainer/Tools/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "change color scheme"
+
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/Tools/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "red
+"
+
+[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/Tools/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "orange"
+
+[node name="Button3" type="Button" parent="MarginContainer/HBoxContainer/Tools/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "yellow
+"
+
+[node name="Button4" type="Button" parent="MarginContainer/HBoxContainer/Tools/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "green
+"
+
+[node name="Button5" type="Button" parent="MarginContainer/HBoxContainer/Tools/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "blue
+"
+
+[node name="Button6" type="Button" parent="MarginContainer/HBoxContainer/Tools/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "purple
+"
+
+[node name="Button7" type="Button" parent="MarginContainer/HBoxContainer/Tools/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "black
+"
+
+[node name="Button8" type="Button" parent="MarginContainer/HBoxContainer/Tools/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "white
+"
+
+[node name="Canvases" type="PanelContainer" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+size_flags_horizontal = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/Canvases"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Face
+"
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_gi06h")
+
+[node name="PixelEditor" type="Node2D" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer/PanelContainer"]
+script = ExtResource("1_xtuf2")
+canvas_size = Vector2(200, 200)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="FaceSave" type="Button" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Save"
+script = ExtResource("2_ns6bw")
+filename = "Face"
+
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Clear
+"
+script = ExtResource("4_4lync")
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Body
+"
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(200, 300)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_styles/panel = SubResource("StyleBoxFlat_b84g8")
+
+[node name="PixelEditor" type="Node2D" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer2/PanelContainer"]
+script = ExtResource("1_xtuf2")
+canvas_size = Vector2(200, 300)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="BodySave" type="Button" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Save
+"
+script = ExtResource("2_ns6bw")
+filename = "Body"
+
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Clear
+"
+script = ExtResource("4_4lync")
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer3"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer3/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("5_2qexi")
+
+[node name="SubViewport" type="SubViewport" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer3/PanelContainer/Control"]
+
+[node name="Camera2D" type="Camera2D" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer3/PanelContainer/Control/SubViewport"]
+position = Vector2(245, 20)
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer3/PanelContainer/Control"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_right = 200.0
+offset_bottom = 200.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = SubResource("CanvasTexture_mvc5d")
+
+[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer3"]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer3/PanelContainer2"]
+layout_mode = 2
+size_flags_stretch_ratio = 0.46
+
+[node name="ModelViewer" type="SubViewportContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+size_flags_stretch_ratio = 2.01
+
+[node name="SubViewport" type="SubViewport" parent="MarginContainer/HBoxContainer/ModelViewer"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(277, 487)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="MarginContainer/HBoxContainer/ModelViewer/SubViewport"]
+transform = Transform3D(0.0543835, -0.148958, 0.987347, 0.0110455, 0.98884, 0.148575, -0.998459, 0.00282577, 0.0554219, 0.826134, 0.721489, -0.519715)
+current = true
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="MarginContainer/HBoxContainer/ModelViewer/SubViewport"]
+transform = Transform3D(-0.0115348, -0.421985, 0.906529, -0.00536897, 0.906603, 0.421951, -0.999919, 0, -0.0127231, 0.868022, 1.25057, -0.570359)
+light_color = Color(0.8856, 0.837684, 0.756467, 1)
+light_energy = 0.674
+light_indirect_energy = 0.667
+light_volumetric_fog_energy = 0.583
+shadow_enabled = true
+
+[node name="Node3D" type="Node3D" parent="MarginContainer/HBoxContainer/ModelViewer/SubViewport"]
+
+[node name="Player" parent="MarginContainer/HBoxContainer/ModelViewer/SubViewport/Node3D" instance=ExtResource("4_cv5l7")]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.154712, 0, -0.14926)
+
+[node name="BaseColor" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/BaseColor"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Base Color"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer/BaseColor"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/BaseColor/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/BaseColor/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Black
+"
+
+[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/BaseColor/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "White
+"
+
+[node name="Button3" type="Button" parent="MarginContainer/HBoxContainer/BaseColor/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Blue
+"
+
+[node name="Model Type" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.33
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/Model Type"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 13.47
+
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/Model Type/VBoxContainer"]
+layout_mode = 2
+text = "Cat
+"
+
+[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/Model Type/VBoxContainer"]
+layout_mode = 2
+text = "Human
+"
+
+[node name="Button3" type="Button" parent="MarginContainer/HBoxContainer/Model Type/VBoxContainer"]
+layout_mode = 2
+text = "Dog
+"
+
+[node name="Button4" type="Button" parent="MarginContainer/HBoxContainer/Model Type/VBoxContainer"]
+layout_mode = 2
+text = "Bunny
+"
+
+[node name="Button5" type="Button" parent="MarginContainer/HBoxContainer/Model Type"]
+layout_mode = 2
+size_flags_vertical = 8
+text = "Enter
+"
+
+[node name="FileDialog" type="FileDialog" parent="."]
+title = "Open a File"
+size = Vector2i(514, 500)
+min_size = Vector2i(500, 400)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.png", "*.jpg")
+
+[connection signal="pressed" from="MarginContainer/HBoxContainer/Tools/VBoxContainer/GridContainer/Button5" to="MarginContainer/HBoxContainer/Tools/VBoxContainer/GridContainer/Button5" method="_on_pressed"]
+[connection signal="file_selected" from="FileDialog" to="MarginContainer/HBoxContainer/Tools/VBoxContainer/GridContainer/Button5" method="_on_file_selected"]

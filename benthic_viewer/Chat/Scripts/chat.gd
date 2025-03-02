@@ -1,7 +1,6 @@
 extends Control
 @onready var metaverse_session = get_tree().root.get_node("MetaverseSession") 
 @onready var chat_bubble_scene= load("res://Chat/ChatBubble.tscn")
-@export var ChatBubble: Resource
 @onready var chat = $MarginContainer/HBoxContainer/ChatBox
 
 # Called when the node enters the scene tree for the first time.
