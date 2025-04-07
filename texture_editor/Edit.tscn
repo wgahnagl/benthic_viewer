@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://dalciw7io7v7l"]
+[gd_scene load_steps=9 format=3 uid="uid://dalciw7io7v7l"]
 
 [ext_resource type="Script" path="res://LoadButton.gd" id="1_ti2g8"]
 [ext_resource type="Script" path="res://canvas.gd" id="1_xtuf2"]
 [ext_resource type="Script" path="res://save_image.gd" id="2_ns6bw"]
+[ext_resource type="Script" path="res://Clear.gd" id="4_4lync"]
 [ext_resource type="PackedScene" uid="uid://c2pvv6jfm0a5p" path="res://player_models/Avatar.tscn" id="4_cv5l7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gi06h"]
@@ -171,6 +172,7 @@ layout_mode = 2
 size_flags_horizontal = 8
 text = "Clear
 "
+script = ExtResource("4_4lync")
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer"]
 layout_mode = 2
@@ -208,6 +210,7 @@ layout_mode = 2
 size_flags_horizontal = 8
 text = "Clear
 "
+script = ExtResource("4_4lync")
 
 [node name="ModelViewer" type="SubViewportContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
@@ -281,6 +284,4 @@ access = 2
 filters = PackedStringArray("*.png", "*.jpg")
 
 [connection signal="pressed" from="MarginContainer/HBoxContainer/Tools/VBoxContainer/GridContainer/Button5" to="MarginContainer/HBoxContainer/Tools/VBoxContainer/GridContainer/Button5" method="_on_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer/HBoxContainer/FaceSave" to="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer/HBoxContainer/FaceSave" method="_on_face_button_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer2/HBoxContainer/BodySave" to="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer/HBoxContainer/FaceSave" method="_on_body_button_pressed"]
 [connection signal="file_selected" from="FileDialog" to="MarginContainer/HBoxContainer/Tools/VBoxContainer/GridContainer/Button5" method="_on_file_selected"]

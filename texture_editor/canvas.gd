@@ -67,6 +67,7 @@ func save_image(path: String):
 	
 	# Save the image to a file
 	image.save_png(path)
+	
 
 func load_image(path: String):
 	var image = Image.new()
