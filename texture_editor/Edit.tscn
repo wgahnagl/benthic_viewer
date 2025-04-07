@@ -214,16 +214,18 @@ script = ExtResource("4_4lync")
 
 [node name="ModelViewer" type="SubViewportContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 6
+size_flags_vertical = 4
 size_flags_stretch_ratio = 2.01
 
 [node name="SubViewport" type="SubViewport" parent="MarginContainer/HBoxContainer/ModelViewer"]
 transparent_bg = true
 handle_input_locally = false
+size = Vector2i(277, 487)
 render_target_update_mode = 4
 
 [node name="Camera3D" type="Camera3D" parent="MarginContainer/HBoxContainer/ModelViewer/SubViewport"]
-transform = Transform3D(-0.052458, 0, 0.998623, 0, 1, 0, -0.998623, 0, -0.052458, 0.724383, 0.705453, -0.560907)
+transform = Transform3D(0.0543835, -0.148958, 0.987347, 0.0110455, 0.98884, 0.148575, -0.998459, 0.00282577, 0.0554219, 0.826134, 0.721489, -0.519715)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="MarginContainer/HBoxContainer/ModelViewer/SubViewport"]
 transform = Transform3D(-0.0115348, -0.421985, 0.906529, -0.00536897, 0.906603, 0.421951, -0.999919, 0, -0.0127231, 0.868022, 1.25057, -0.570359)
@@ -238,6 +240,40 @@ shadow_enabled = true
 [node name="Player" parent="MarginContainer/HBoxContainer/ModelViewer/SubViewport/Node3D" instance=ExtResource("4_cv5l7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.154712, 0, -0.14926)
 script = SubResource("GDScript_12nbu")
+
+[node name="BaseColor" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/BaseColor"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Base Color"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer/BaseColor"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/BaseColor/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/BaseColor/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Black
+"
+
+[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/BaseColor/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "White
+"
+
+[node name="Button3" type="Button" parent="MarginContainer/HBoxContainer/BaseColor/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Blue
+"
 
 [node name="Model Type" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
@@ -277,7 +313,8 @@ text = "Enter
 
 [node name="FileDialog" type="FileDialog" parent="."]
 title = "Open a File"
-size = Vector2i(514, 180)
+size = Vector2i(514, 500)
+min_size = Vector2i(500, 400)
 ok_button_text = "Open"
 file_mode = 0
 access = 2

@@ -8,6 +8,7 @@ class_name PixelEditor
 var pixel_grid = {}
 var selected_color = Color(1, 1, 1, 1)
 var is_drawing = false
+var last_draw_pos = null
 
 func _ready():
 	canvas_size.x = canvas_size.x/pixel_size
@@ -25,17 +26,35 @@ func initialize_canvas():
 func _input(event):
 	if not is_visible_in_tree():
 		return
-	
-	if event is InputEventMouseButton:
-		if event.pressed and _is_within_bounds(event.position):
+
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
 			is_drawing = true
-		elif not event.pressed:
+			last_draw_pos = null
+			_draw_at(event.position)
+		else:
 			is_drawing = false
+			last_draw_pos = null
+
 	elif event is InputEventMouseMotion and is_drawing:
-		var grid_pos = (to_local(event.position) / pixel_size).floor()
-		if pixel_grid.has(grid_pos):
+		_draw_at(event.position)
+
+func _draw_at(position: Vector2):
+	var grid_pos = (to_local(position) / pixel_size).floor()
+
+	if pixel_grid.has(grid_pos):
+		if last_draw_pos == null:
 			pixel_grid[grid_pos] = selected_color
-			queue_redraw()
+		else:
+			# Interpolate between last and current
+			var delta = grid_pos - last_draw_pos
+			var steps = max(abs(delta.x), abs(delta.y))
+			for i in range(steps + 1):
+				var interp_pos = last_draw_pos.lerp(grid_pos, i / float(steps)).floor()
+				if pixel_grid.has(interp_pos):
+					pixel_grid[interp_pos] = selected_color
+		last_draw_pos = grid_pos
+		queue_redraw()
 
 func _is_within_bounds(position: Vector2) -> bool:
 	var local_pos = to_local(position)
