@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dalciw7io7v7l"]
+[gd_scene load_steps=8 format=3 uid="uid://dalciw7io7v7l"]
 
 [ext_resource type="Script" path="res://LoadButton.gd" id="1_ti2g8"]
 [ext_resource type="Script" path="res://canvas.gd" id="1_xtuf2"]
@@ -10,18 +10,7 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b84g8"]
 
-[sub_resource type="GDScript" id="GDScript_12nbu"]
-script/source = "extends Node3D
-
-signal avatar_load
-
-func _ready():
-	# Once the Player node is fully loaded, emit the signal
-	emit_signal(\"avatar_load\")
-"
-
-[node name="Control" type="Control"]
-layout_mode = 3
+[node name="Control" type="TextureEdit"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -226,6 +215,7 @@ render_target_update_mode = 4
 
 [node name="Camera3D" type="Camera3D" parent="MarginContainer/HBoxContainer/ModelViewer/SubViewport"]
 transform = Transform3D(0.0543835, -0.148958, 0.987347, 0.0110455, 0.98884, 0.148575, -0.998459, 0.00282577, 0.0554219, 0.826134, 0.721489, -0.519715)
+current = true
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="MarginContainer/HBoxContainer/ModelViewer/SubViewport"]
 transform = Transform3D(-0.0115348, -0.421985, 0.906529, -0.00536897, 0.906603, 0.421951, -0.999919, 0, -0.0127231, 0.868022, 1.25057, -0.570359)
@@ -239,7 +229,6 @@ shadow_enabled = true
 
 [node name="Player" parent="MarginContainer/HBoxContainer/ModelViewer/SubViewport/Node3D" instance=ExtResource("4_cv5l7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.154712, 0, -0.14926)
-script = SubResource("GDScript_12nbu")
 
 [node name="BaseColor" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(100, 0)

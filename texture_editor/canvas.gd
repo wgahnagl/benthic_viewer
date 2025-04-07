@@ -83,10 +83,13 @@ func save_image(path: String):
 	for pos in pixel_grid.keys():
 		var color = pixel_grid[pos]
 		image.set_pixelv(pos, color)
+		
+	var raw_data: PackedByteArray = image.get_data()
+	var width = image.get_width()
+	var height = image.get_height()
 	
-	# Save the image to a file
+	get_tree().root.get_child(0).process_image(width, height, raw_data)
 	image.save_png(path)
-	
 
 func load_image(path: String):
 	var image = Image.new()
