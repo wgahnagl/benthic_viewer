@@ -72,7 +72,7 @@ func set_canvas_size(new_size: Vector2):
 	initialize_canvas()
 	queue_redraw()
 
-func _process(delta):
+func _process(_delta):
 	if get_parent():
 		scale = get_parent().scale
 
@@ -88,7 +88,7 @@ func save_image(path: String):
 	var width = image.get_width()
 	var height = image.get_height()
 	
-	get_tree().root.get_child(0).process_image(width, height, raw_data)
+	get_tree().root.get_child(0).process_image(width, height, raw_data, "player_models/muffing_skin.png")
 	image.save_png(path)
 
 func load_image(path: String):

@@ -1,14 +1,17 @@
-[gd_scene load_steps=8 format=3 uid="uid://dalciw7io7v7l"]
+[gd_scene load_steps=10 format=3 uid="uid://dalciw7io7v7l"]
 
 [ext_resource type="Script" path="res://LoadButton.gd" id="1_ti2g8"]
 [ext_resource type="Script" path="res://canvas.gd" id="1_xtuf2"]
 [ext_resource type="Script" path="res://save_image.gd" id="2_ns6bw"]
 [ext_resource type="Script" path="res://Clear.gd" id="4_4lync"]
 [ext_resource type="PackedScene" uid="uid://c2pvv6jfm0a5p" path="res://player_models/Avatar.tscn" id="4_cv5l7"]
+[ext_resource type="Script" path="res://canvas_layer.gd" id="5_2qexi"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gi06h"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b84g8"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_mvc5d"]
 
 [node name="Control" type="TextureEdit"]
 anchors_preset = 15
@@ -127,6 +130,7 @@ size_flags_horizontal = 2
 layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer"]
+visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer"]
@@ -164,6 +168,7 @@ text = "Clear
 script = ExtResource("4_4lync")
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer"]
+visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer2"]
@@ -201,6 +206,44 @@ text = "Clear
 "
 script = ExtResource("4_4lync")
 
+[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer3"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer3/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("5_2qexi")
+
+[node name="SubViewport" type="SubViewport" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer3/PanelContainer/Control"]
+
+[node name="Camera2D" type="Camera2D" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer3/PanelContainer/Control/SubViewport"]
+position = Vector2(245, 20)
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer3/PanelContainer/Control"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_right = 200.0
+offset_bottom = 200.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = SubResource("CanvasTexture_mvc5d")
+
+[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer3"]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/Canvases/VBoxContainer/VBoxContainer3/PanelContainer2"]
+layout_mode = 2
+size_flags_stretch_ratio = 0.46
+
 [node name="ModelViewer" type="SubViewportContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 6
@@ -228,6 +271,7 @@ shadow_enabled = true
 [node name="Node3D" type="Node3D" parent="MarginContainer/HBoxContainer/ModelViewer/SubViewport"]
 
 [node name="Player" parent="MarginContainer/HBoxContainer/ModelViewer/SubViewport/Node3D" instance=ExtResource("4_cv5l7")]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.154712, 0, -0.14926)
 
 [node name="BaseColor" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
