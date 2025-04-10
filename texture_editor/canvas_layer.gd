@@ -12,7 +12,6 @@ var previous_pos = Vector2()
 
 @onready var texture_rect : TextureRect = %TextureRect
 @onready var full_rect: TextureRect = $display
-@onready var camera : Camera2D = $SubViewport/Camera2D  # Assuming you have a Camera2D node in the SubViewport
 
 func _ready():
 	
@@ -41,12 +40,12 @@ func set_player_texture(new_texture: ImageTexture):
 	# Assuming your player has a MeshInstance3D with a material
 	var mesh_instance = %Player/CustomArmature/Skeleton3D/player  # Find the mesh instance inside the player
 	if mesh_instance:
-		var material = mesh_instance.get_active_material(0)
-		print(material)
-		if material:
-			if material is StandardMaterial3D:
+		var custom_material = mesh_instance.get_active_material(0)
+		print(custom_material)
+		if custom_material:
+			if custom_material is StandardMaterial3D:
 				# If you're using a custom shader, you can set it like this:
-				material.set_texture(0, new_texture)
+				custom_material.set_texture(0, new_texture)
 			else:
 				print("Material type not supported!")
 		else:
@@ -99,3 +98,7 @@ func draw_between(start_pos: Vector2, end_pos: Vector2):
 	for step in range(num_steps):
 		var lerp_pos = start_pos.lerp(end_pos, step / float(num_steps))
 		draw_at(lerp_pos)  # Draw at the interpolated position
+
+
+func _on_palette_switcher_pressed() -> void:
+	pass # Replace with function body.
