@@ -1,7 +1,0 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://ddcnvsyy1fwab"]
-
-[ext_resource type="FontFile" uid="uid://bgnddaomk7lyp" path="res://fonts/MochiyPopOne-Regular.ttf" id="1_iith6"]
-
-[resource]
-default_base_scale = 0.32
-default_font = ExtResource("1_iith6")
