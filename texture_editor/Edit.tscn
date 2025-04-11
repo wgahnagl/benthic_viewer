@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://dalciw7io7v7l"]
+[gd_scene load_steps=19 format=3 uid="uid://dalciw7io7v7l"]
 
 [ext_resource type="Theme" uid="uid://crjwisyi5hygl" path="res://themes/benthic_theme.tres" id="1_cw7ke"]
 [ext_resource type="Script" path="res://color_selector.gd" id="3_1cahl"]
@@ -14,6 +14,7 @@
 [ext_resource type="Script" path="res://pen.gd" id="10_hmjak"]
 [ext_resource type="Script" path="res://eraser.gd" id="10_rlr78"]
 [ext_resource type="Script" path="res://bucket.gd" id="11_pouh1"]
+[ext_resource type="Script" path="res://line.gd" id="13_vrssl"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4edc5"]
 bg_color = Color(1, 1, 1, 1)
@@ -321,6 +322,7 @@ button_pressed = true
 script = ExtResource("10_hmjak")
 
 [node name="Eraser" type="Button" parent="ss/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -343,6 +345,8 @@ layout_mode = 2
 size_flags_horizontal = 4
 tooltip_text = "Line"
 theme_type_variation = &"CircleButton"
+toggle_mode = true
+script = ExtResource("13_vrssl")
 
 [node name="Star Stamp" type="Button" parent="ss/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
 layout_mode = 2
