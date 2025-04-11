@@ -1,7 +1,7 @@
 extends Control
 
-var image
-var texture
+var face_image
+var face_texture
 var base_image 
 var base_texture
 
@@ -38,23 +38,23 @@ var redo_stack = []
 var grid = []
 
 func _ready():
-	image = Image.create(1500, 1500, false, Image.FORMAT_RGBA8)
-	image.fill(Color(1, 1, 1, 0)) 
+	face_image = Image.create(1500, 1500, false, Image.FORMAT_RGBA8)
+	face_image.fill(Color(1, 1, 1, 0)) 
 	
 	texture_rect.set_position(-draw_area_position)
-	texture = ImageTexture.create_from_image(image)
-	texture_rect.texture = texture
+	face_texture = ImageTexture.create_from_image(face_image)
+	texture_rect.texture = face_texture
 	
 	draw_area = Rect2(draw_area_position, draw_area_size)
 	
 	var at = AtlasTexture.new()
-	at.atlas = texture
+	at.atlas = face_texture
 	at.region = Rect2(draw_area_position, draw_area_size)
 	full_rect.texture = at 
 	
 	full_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 
-	set_player_texture(texture)
+	set_player_texture(face_texture)
 	
 	var palette_selector = %PaletteSwitcher
 	palette_selector.connect("palette_selected", _on_palette_selected)
@@ -79,8 +79,8 @@ func _on_clear():
 		for x in range(row.size()):
 			var p = Vector2(x + draw_area_position.x, y + draw_area_position.y)
 			Globals.DRAWING[x][y] = -1
-			image.set_pixelv(p, Color(1,1,1,0))
-	texture.update(image)
+			face_image.set_pixelv(p, Color(1,1,1,0))
+	face_texture.update(face_image)
 	save_state()
 	
 func _on_palette_selected(id):
@@ -90,12 +90,12 @@ func _on_palette_selected(id):
 			var color_id = row[x]
 			var p = Vector2(x + draw_area_position.x, y + draw_area_position.y)
 			if color_id < 0: 
-				image.set_pixelv(p, Color(1,1,1,0))
+				face_image.set_pixelv(p, Color(1,1,1,0))
 			else: 
-				image.set_pixelv(p, Globals.PALETTES[id][color_id])
+				face_image.set_pixelv(p, Globals.PALETTES[id][color_id])
 	base_image.fill(Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_BACKGROUND_COLOR])
 	base_texture.update(base_image)
-	texture.update(image)
+	face_texture.update(face_image)
 	save_state()
 
 func set_player_texture(new_texture: ImageTexture):
@@ -147,57 +147,67 @@ func _input(event):
 				else:
 					is_drawing = true
 					previous_pos = local_pos 
-					draw_at(local_pos)
+					draw_at(face_image, local_pos)
 		else:
 			if is_line_drawing:
 				is_line_drawing = false
-				draw_line_on_canvas(line_start_pos, line_end_pos)
-				queue_redraw()  # Make sure the canvas gets updated
+				draw_line_on_canvas(face_image, line_start_pos, line_end_pos)
 				save_state()
 			if is_circle_drawing:
 				is_circle_drawing = false
-				draw_circle_image(circle_start_pos, circle_radius)
-				queue_redraw()
+				draw_circle_on_canvas(face_image, circle_start_pos, circle_radius)
+				face_texture.update(face_image)
+				save_state()
 			if is_rectangle_drawing:
 				is_rectangle_drawing = false
-				draw_rectangle(rectangle_start_pos, rectangle_width, rectangle_height)  # Finalize the rectangle drawing
-				queue_redraw()
+				draw_rectangle_on_canvas(face_image, rectangle_start_pos, rectangle_width, rectangle_height)  # Finalize the rectangle drawing
+				face_texture.update(face_image)
+				save_state()
 			elif is_drawing:
 				is_drawing = false
 				save_state()
-
 	var local_pos = texture_rect.get_local_mouse_position()
 	if event is InputEventMouseMotion and draw_area.has_point(local_pos):
 		if is_circle_drawing:
 			circle_radius = int(circle_start_pos.distance_to(local_pos)) 
-			queue_redraw() 
+			var preview_image = undo_stack[-1][0].duplicate()
+			draw_circle_on_canvas(preview_image, circle_start_pos, circle_radius)
+			face_texture.update(preview_image)
 		elif is_rectangle_drawing:
 			rectangle_width = int(local_pos.x - rectangle_start_pos.x) 
 			rectangle_height = int(local_pos.y - rectangle_start_pos.y)
-			queue_redraw()
+			var preview_image = undo_stack[-1][0].duplicate()
+			draw_rectangle_on_canvas(preview_image, rectangle_start_pos, rectangle_width, rectangle_height)
+			face_texture.update(preview_image)
 		elif is_line_drawing: 
+			var preview_image = undo_stack[-1][0].duplicate()
+			draw_line_on_canvas(preview_image, line_start_pos, line_end_pos)
+			face_texture.update(preview_image)
 			line_end_pos = local_pos
-			queue_redraw() 
 		elif is_drawing and draw_area.has_point(local_pos):
 			draw_between(previous_pos, local_pos)
 			previous_pos = local_pos
 
-func draw_line_on_canvas(start_pos: Vector2, end_pos: Vector2):
+func draw_line_on_canvas(image: Image, start_pos: Vector2, end_pos: Vector2):
 	var num_steps = int(start_pos.distance_to(end_pos))
 	for step in range(num_steps):
 		var lerp_pos = start_pos.lerp(end_pos, step / float(num_steps))
-		draw_at(lerp_pos) 
+		draw_at(image, lerp_pos) 
 
 
-func draw_at(pos: Vector2):	
+func draw_at(image: Image, pos: Vector2):
 	var width = image.get_width()
 	var height = image.get_height()
+	var preview_image = image != face_image
 	for y in range(-Globals.CURRENT_BRUSH_SIZE, Globals.CURRENT_BRUSH_SIZE):
 		for x in range(-Globals.CURRENT_BRUSH_SIZE, Globals.CURRENT_BRUSH_SIZE):
 			var p = pos + Vector2(x, y)
 			if draw_area.has_point(p) and p.x >= 0 and p.y >= 0 and p.x < width and p.y < height:
 				var local_pos = p - draw_area_position
-				Globals.DRAWING[local_pos.y][local_pos.x] = Globals.CURRENT_COLOR  # Note the flip (y, x)
+				
+				if !preview_image:
+					Globals.DRAWING[local_pos.y][local_pos.x] = Globals.CURRENT_COLOR  # Note the flip (y, x)
+				
 				if Globals.CURRENT_COLOR < 0:
 					image.set_pixelv(p, Color(1,1,1,0))
 				else:
@@ -208,20 +218,21 @@ func draw_at(pos: Vector2):
 					var mirror_pos = Vector2(mirror_x, p.y)
 					if mirror_pos.x >= 0 and mirror_pos.x < width:
 						var mirror_local_pos = mirror_pos - draw_area_position
-						Globals.DRAWING[mirror_local_pos.y][mirror_local_pos.x] = Globals.CURRENT_COLOR
+						if !preview_image:
+							Globals.DRAWING[mirror_local_pos.y][mirror_local_pos.x] = Globals.CURRENT_COLOR
 						
 						if Globals.CURRENT_COLOR < 0:
 							image.set_pixelv(mirror_pos, Color(1,1,1,0))
 						else:
 							image.set_pixelv(mirror_pos, Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_COLOR])
-	texture.update(image)
+	face_texture.update(face_image)
 	queue_redraw()
 
 func draw_between(start_pos: Vector2, end_pos: Vector2):
 	var num_steps = int(start_pos.distance_to(end_pos))
 	for step in range(num_steps):
 		var lerp_pos = start_pos.lerp(end_pos, step / float(num_steps))
-		draw_at(lerp_pos) 
+		draw_at(face_image, lerp_pos) 
 
 func _on_background_change():
 	if Globals.CURRENT_COLOR >= 0:
@@ -229,11 +240,11 @@ func _on_background_change():
 		base_texture.update(base_image)
 		
 func bucket_fill(pos: Vector2):
-	var width = image.get_width()
-	var height = image.get_height()
+	var width = face_image.get_width()
+	var height = face_image.get_height()
 	if pos.x < 0 or pos.y < 0 or pos.x >= width or pos.y >= height:
 		return
-	var target_color = image.get_pixelv(pos)
+	var target_color = face_image.get_pixelv(pos)
 	var new_color: Color = Color(1, 1, 1, 0) if Globals.CURRENT_COLOR == -1 else Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_COLOR]
 	if target_color == new_color:
 		return
@@ -244,24 +255,24 @@ func bucket_fill(pos: Vector2):
 			continue
 		if not draw_area.has_point(p):
 			continue
-		var current_color = image.get_pixelv(p)
+		var current_color = face_image.get_pixelv(p)
 		if current_color != target_color:
 			continue
 		var local_pos = p - draw_area_position
 		if Globals.CURRENT_COLOR < 0:
-			image.set_pixelv(p, Color(1,1,1,0))
+			face_image.set_pixelv(p, Color(1,1,1,0))
 			Globals.DRAWING[local_pos.y][local_pos.x] = -1
 		else:
-			image.set_pixelv(p, new_color)
+			face_image.set_pixelv(p, new_color)
 			Globals.DRAWING[local_pos.y][local_pos.x] = Globals.CURRENT_COLOR
 		stack.append(p + Vector2(1, 0))
 		stack.append(p + Vector2(-1, 0))
 		stack.append(p + Vector2(0, 1))
 		stack.append(p + Vector2(0, -1))
-	texture.update(image)
+	face_texture.update(face_image)
 	save_state()
 
-func draw_circle_image(center: Vector2, radius: int):
+func draw_circle_on_canvas(image: Image, center: Vector2, radius: int):
 	var width = image.get_width()
 	var height = image.get_height()
 	
@@ -277,11 +288,9 @@ func draw_circle_image(center: Vector2, radius: int):
 						image.set_pixelv(p, Color(1, 1, 1, 0))  # Transparent color
 					else:
 						image.set_pixelv(p, Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_COLOR])
-	texture.update(image)
-	queue_redraw()
 
 func save_state():
-	undo_stack.append([image.duplicate(), Globals.DRAWING.duplicate()])
+	undo_stack.append([face_image.duplicate(), Globals.DRAWING.duplicate()])
 	if undo_stack.size() > 10:
 		undo_stack.pop_front() 
 	redo_stack.clear()
@@ -291,21 +300,21 @@ func _on_undo():
 		var current_state = undo_stack.pop_back()
 		redo_stack.append(current_state)
 		var previous_state = undo_stack[-1]  
-		image = previous_state[0].duplicate()
+		face_image = previous_state[0].duplicate()
 		Globals.DRAWING = previous_state[1].duplicate()
-		texture.update(image)
+		face_texture.update(face_image)
 		
 func _on_redo():
 	if redo_stack.size() > 0:
 		var state = redo_stack.pop_back()
-		image = state[0]
+		face_image = state[0]
 		Globals.DRAWING = state[1]
-		texture.update(image)
-		undo_stack.append([image.duplicate(), Globals.DRAWING.duplicate()])  # Save to undo stack
+		face_texture.update(face_image)
+		undo_stack.append([face_image.duplicate(), Globals.DRAWING.duplicate()])  # Save to undo stack
 
-func draw_rectangle(start_pos: Vector2, width: int, height: int):
-	var img_width = image.get_width()
-	var img_height = image.get_height()
+func draw_rectangle_on_canvas(image: Image, start_pos: Vector2, width: int, height: int):
+	var img_width = face_image.get_width()
+	var img_height = face_image.get_height()
 	
 	var top_left = start_pos
 	var bottom_right = start_pos + Vector2(width, height)
@@ -321,7 +330,3 @@ func draw_rectangle(start_pos: Vector2, width: int, height: int):
 					image.set_pixelv(p, Color(1, 1, 1, 0))  # Transparent color
 				else:
 					image.set_pixelv(p, Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_COLOR])
-	texture.update(image)
-	queue_redraw()
-	
-	
