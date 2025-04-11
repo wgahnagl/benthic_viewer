@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dalciw7io7v7l"]
+[gd_scene load_steps=18 format=3 uid="uid://dalciw7io7v7l"]
 
 [ext_resource type="Theme" uid="uid://clx8ih486ovrq" path="res://themes/benthic_theme.tres" id="1_cw7ke"]
 [ext_resource type="Script" path="res://color_selector.gd" id="3_1cahl"]
@@ -10,9 +10,15 @@
 [ext_resource type="Script" path="res://palette_switcher.gd" id="5_nkqv8"]
 [ext_resource type="Script" path="res://size_slider.gd" id="5_q41qr"]
 [ext_resource type="Script" path="res://symmetry.gd" id="6_5wnrp"]
+[ext_resource type="Script" path="res://face_guide.gd" id="7_286jv"]
+[ext_resource type="Script" path="res://pen.gd" id="10_hmjak"]
+[ext_resource type="Script" path="res://eraser.gd" id="10_rlr78"]
+[ext_resource type="Script" path="res://bucket.gd" id="11_pouh1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4edc5"]
 bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_axer5"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_mvc5d"]
 
@@ -190,6 +196,11 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_4edc5")
 
+[node name="FaceGuide" type="Panel" parent="MarginContainer/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/PanelContainer/FaceEdit"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_axer5")
+
 [node name="Control" type="Control" parent="MarginContainer/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/PanelContainer/FaceEdit"]
 visible = false
 layout_mode = 2
@@ -215,13 +226,17 @@ theme_override_constants/separation = 1
 [node name="Symmetry" type="Button" parent="MarginContainer/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/VBoxContainer"]
 layout_mode = 2
 theme_type_variation = &"CircleButton2"
+toggle_mode = true
 script = ExtResource("6_5wnrp")
 
 [node name="Guide" type="Button" parent="MarginContainer/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/VBoxContainer"]
 layout_mode = 2
 theme_type_variation = &"CircleButton2"
+toggle_mode = true
+script = ExtResource("7_286jv")
 
 [node name="Clear" type="Button" parent="MarginContainer/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 theme_type_variation = &"CircleButton2"
@@ -301,6 +316,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 tooltip_text = "Pen"
 theme_type_variation = &"CircleButton"
+script = ExtResource("10_hmjak")
 
 [node name="Eraser" type="Button" parent="MarginContainer/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
 layout_mode = 2
@@ -309,12 +325,14 @@ size_flags_vertical = 4
 tooltip_text = "Eraser
 "
 theme_type_variation = &"CircleButton"
+script = ExtResource("10_rlr78")
 
 [node name="Bucket" type="Button" parent="MarginContainer/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 tooltip_text = "Bucket"
 theme_type_variation = &"CircleButton"
+script = ExtResource("11_pouh1")
 
 [node name="Line" type="Button" parent="MarginContainer/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
 layout_mode = 2

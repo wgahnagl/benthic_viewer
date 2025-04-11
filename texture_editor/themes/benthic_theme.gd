@@ -1,12 +1,12 @@
 @tool
 extends Node
 
-var PRIMARY = Color("#3498db")
-var SECONDARY = Color("#00c0d1")
-var TERTIARY = Color("#8ae7d4")
-var COLOR4 = Color("#86ea1f")
-var TEXT = Color("#ffffff")
-var BACKGROUND = Color("#1e1e1e")
+var PRIMARY = Globals.COLOR1
+var SECONDARY = Globals.COLOR2
+var TERTIARY = Globals.COLOR3
+var COLOR4 = Globals.COLOR4
+var TEXT = Globals.TEXT
+var BACKGROUND = Globals.BACKGROUND
 
 # For button presses, to unify how dark they become on hover and press
 var DARK_FACTOR1 = 0.9
