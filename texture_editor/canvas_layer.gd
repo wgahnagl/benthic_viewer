@@ -7,6 +7,8 @@ var base_texture
 
 var pattern_image 
 var pattern_texture
+var mirror_enabled := true 
+var mirror_pos = 100
 
 var draw_area
 var is_drawing = false
@@ -72,12 +74,13 @@ func set_player_texture(new_texture: ImageTexture):
 	var kitty_ears = %Player/"CustomArmature/Skeleton3D/kitty ears"
 
 
-	var material = load("res://PlayerLayers.tres") as ShaderMaterial
-	material.set_shader_parameter("base_texture", base_texture)
-	material.set_shader_parameter("pattern_texture", pattern_texture)
-	material.set_shader_parameter("face_texture", new_texture)
-	mesh_instance.set_surface_override_material(0, material)
-	kitty_ears.set_surface_override_material(0, material)
+	var shader_material = load("res://PlayerLayers.tres") as ShaderMaterial
+	shader_material.set_shader_parameter("base_texture", base_texture)
+	shader_material.set_shader_parameter("pattern_texture", pattern_texture)
+	shader_material.set_shader_parameter("face_texture", new_texture)
+	
+	mesh_instance.set_surface_override_material(0, shader_material)
+	kitty_ears.set_surface_override_material(0, shader_material)
 		
 func _input(event):
 	if event is InputEventMouseButton:
@@ -106,6 +109,14 @@ func draw_at(pos: Vector2):
 				var local_pos = p - draw_area_position
 				Globals.DRAWING[local_pos.y][local_pos.x] = Globals.CURRENT_COLOR  # Note the flip (y, x)
 				image.set_pixelv(p, Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_COLOR])
+				
+				if Globals.MIRROR_ENABLED:
+					var mirror_x = draw_area_position.x * 2 + draw_area_size.x - p.x - 1
+					var mirror_pos = Vector2(mirror_x, p.y)
+					if mirror_pos.x >= 0 and mirror_pos.x < width:
+						var mirror_local_pos = mirror_pos - draw_area_position
+						Globals.DRAWING[mirror_local_pos.y][mirror_local_pos.x] = Globals.CURRENT_COLOR
+						image.set_pixelv(mirror_pos, Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_COLOR])
 	texture.update(image)
 	queue_redraw()
 

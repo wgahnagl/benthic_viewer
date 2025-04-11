@@ -18,8 +18,6 @@ void fragment() {
 	vec4 base = texture(base_texture, UV);
 	vec4 pattern = texture(pattern_texture, UV);
 	vec4 face = texture(face_texture, UV);
-
-	// Layering: face on top of pattern on top of base
 	vec4 final = base;
 	final = mix(final, pattern, pattern.a);
 	final = mix(final, face, face.a);
