@@ -13,6 +13,10 @@ var draw_area
 var is_drawing = false
 var previous_pos = Vector2()
 
+var is_line_drawing := false
+var line_start_pos: Vector2
+var line_end_pos: Vector2
+
 @export var draw_area_position : Vector2 = Vector2(250, 120)  
 @export var draw_area_size : Vector2 = Vector2(200, 200)
 
@@ -99,18 +103,37 @@ func _input(event):
 			if draw_area.has_point(local_pos):
 				if Globals.BUCKET_ENABLED:
 					bucket_fill(local_pos)
+				elif Globals.LINE_ENABLED: 
+					is_line_drawing = true
+					line_start_pos = local_pos  
+					line_end_pos = local_pos   
 				else:
 					is_drawing = true
 					previous_pos = local_pos 
 					draw_at(local_pos)
 		else:
-			is_drawing = false
+			if is_line_drawing:
+				is_line_drawing = false
+				draw_line_on_canvas(line_start_pos, line_end_pos)
+				queue_redraw()  # Make sure the canvas gets updated
+			else:
+				is_drawing = false
 	
-	if event is InputEventMouseMotion and is_drawing:
+	if event is InputEventMouseMotion:
 		var local_pos = texture_rect.get_local_mouse_position()
-		if draw_area.has_point(local_pos):
+		if is_line_drawing: 
+			line_end_pos = local_pos
+			queue_redraw() 
+		elif is_drawing and draw_area.has_point(local_pos):
 			draw_between(previous_pos, local_pos)
 			previous_pos = local_pos
+
+func draw_line_on_canvas(start_pos: Vector2, end_pos: Vector2):
+	var num_steps = int(start_pos.distance_to(end_pos))
+	for step in range(num_steps):
+		var lerp_pos = start_pos.lerp(end_pos, step / float(num_steps))
+		draw_at(lerp_pos) 
+
 
 func draw_at(pos: Vector2):	
 	var width = image.get_width()

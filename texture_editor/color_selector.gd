@@ -22,3 +22,4 @@ func update_button_colors(palette: int):
 
 func _on_color_change(i: int):
 	Globals.CURRENT_COLOR = i
+	%Eraser.button_pressed = false
