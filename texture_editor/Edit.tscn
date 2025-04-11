@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://dalciw7io7v7l"]
 
-[ext_resource type="Theme" uid="uid://cksbtr7asvsdb" path="res://themes/benthic_theme.tres" id="1_cw7ke"]
+[ext_resource type="Theme" uid="uid://clx8ih486ovrq" path="res://themes/benthic_theme.tres" id="1_cw7ke"]
 [ext_resource type="Script" path="res://color_selector.gd" id="3_1cahl"]
 [ext_resource type="PackedScene" uid="uid://c2pvv6jfm0a5p" path="res://player_models/Avatar.tscn" id="4_cv5l7"]
 [ext_resource type="Script" path="res://grid_size.tres.gd" id="4_pf2em"]
@@ -77,6 +77,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 4
 
 [node name="Color Selector" type="GridContainer" parent="MarginContainer/PanelContainer/HBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -195,6 +196,12 @@ theme_type_variation = &"CircleButton2"
 [node name="Clear" type="Button" parent="MarginContainer/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
+theme_type_variation = &"CircleButton2"
+
+[node name="Clear2" type="Button" parent="MarginContainer/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+tooltip_text = "Line Width"
 theme_type_variation = &"CircleButton2"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/HBoxContainer/VBoxContainer2"]
