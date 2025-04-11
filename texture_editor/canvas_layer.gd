@@ -8,7 +8,6 @@ var base_texture
 var pattern_image 
 var pattern_texture
 var mirror_enabled := true 
-var mirror_pos = 100
 
 var draw_area
 var is_drawing = false
@@ -54,7 +53,6 @@ func _on_clear():
 	for y in range(Globals.DRAWING.size()):
 		var row = Globals.DRAWING[y]
 		for x in range(row.size()):
-			var color_id = row[x]
 			var p = Vector2(x + draw_area_position.x, y + draw_area_position.y)
 			Globals.DRAWING[x][y] = -1
 			image.set_pixelv(p, Color(1,1,1,0))
@@ -159,7 +157,7 @@ func bucket_fill(pos: Vector2):
 	if pos.x < 0 or pos.y < 0 or pos.x >= width or pos.y >= height:
 		return
 	var target_color = image.get_pixelv(pos)
-	var new_color: Color = Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_COLOR]
+	var new_color: Color = Color(1, 1, 1, 0) if Globals.CURRENT_COLOR == -1 else Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_COLOR]
 	if target_color == new_color:
 		return
 	var stack: Array[Vector2] = [pos]

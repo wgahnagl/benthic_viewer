@@ -6,4 +6,5 @@ func _ready():
 
 func _on_button_press():
 	Globals.BUCKET_ENABLED = true
-	print(Globals.BUCKET_ENABLED)
+	$"../Pen".button_pressed = false
+	$".".button_pressed = true
