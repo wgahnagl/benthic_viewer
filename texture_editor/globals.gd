@@ -69,6 +69,7 @@ var CURRENT_PALETTE = 0
 var CURRENT_COLOR = 0
 var CURRENT_BRUSH_SIZE = 3
 var CURRENT_BACKGROUND_COLOR = 7
+var MIRROR_ENABLED = false
 
 func _ready() :
 	for _i in range(200):
