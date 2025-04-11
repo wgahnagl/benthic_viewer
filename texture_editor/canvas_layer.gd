@@ -17,6 +17,18 @@ var is_line_drawing := false
 var line_start_pos: Vector2
 var line_end_pos: Vector2
 
+var is_circle_drawing = false
+var circle_start_pos = Vector2()
+var circle_radius = 0
+
+var is_rectangle_drawing = false
+var rectangle_start_pos = Vector2()
+var rectangle_width = 0
+var rectangle_height = 0
+
+var undo_stack = []
+var redo_stack = []
+
 @export var draw_area_position : Vector2 = Vector2(250, 120)  
 @export var draw_area_size : Vector2 = Vector2(200, 200)
 
@@ -52,6 +64,14 @@ func _ready():
 	
 	var clear = %Clear
 	clear.connect("pressed", _on_clear)
+	
+	var undo = %Undo
+	undo.connect("pressed", _on_undo)
+	
+	var redo = %Redo
+	redo.connect("pressed", _on_redo)
+	
+	save_state()
 
 func _on_clear():
 	for y in range(Globals.DRAWING.size()):
@@ -61,6 +81,7 @@ func _on_clear():
 			Globals.DRAWING[x][y] = -1
 			image.set_pixelv(p, Color(1,1,1,0))
 	texture.update(image)
+	save_state()
 	
 func _on_palette_selected(id):
 	for y in range(Globals.DRAWING.size()):
@@ -75,6 +96,7 @@ func _on_palette_selected(id):
 	base_image.fill(Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_BACKGROUND_COLOR])
 	base_texture.update(base_image)
 	texture.update(image)
+	save_state()
 
 func set_player_texture(new_texture: ImageTexture):
 	base_image = Image.create(1500, 1500, false, Image.FORMAT_RGBA8)
@@ -97,6 +119,12 @@ func set_player_texture(new_texture: ImageTexture):
 	kitty_ears.set_surface_override_material(0, shader_material)
 		
 func _input(event):
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_Z and (event.ctrl_pressed or event.meta_pressed):
+			_on_undo()
+		elif event.keycode == KEY_Y and (event.ctrl_pressed or event.meta_pressed):
+			_on_redo()
+
 	if event is InputEventMouseButton:
 		if event.pressed:
 			var local_pos = texture_rect.get_local_mouse_position()
@@ -106,7 +134,16 @@ func _input(event):
 				elif Globals.LINE_ENABLED: 
 					is_line_drawing = true
 					line_start_pos = local_pos  
-					line_end_pos = local_pos   
+					line_end_pos = local_pos
+				elif Globals.CIRCLE_ENABLED: 
+					is_circle_drawing = true
+					circle_start_pos = local_pos
+					circle_radius = 0  
+				elif Globals.RECTANGLE_ENABLED:
+					is_rectangle_drawing = true
+					rectangle_start_pos = local_pos
+					rectangle_width = 0  # Reset width on each press
+					rectangle_height = 0  # Reset height on each press
 				else:
 					is_drawing = true
 					previous_pos = local_pos 
@@ -116,12 +153,29 @@ func _input(event):
 				is_line_drawing = false
 				draw_line_on_canvas(line_start_pos, line_end_pos)
 				queue_redraw()  # Make sure the canvas gets updated
-			else:
+				save_state()
+			if is_circle_drawing:
+				is_circle_drawing = false
+				draw_circle_image(circle_start_pos, circle_radius)
+				queue_redraw()
+			if is_rectangle_drawing:
+				is_rectangle_drawing = false
+				draw_rectangle(rectangle_start_pos, rectangle_width, rectangle_height)  # Finalize the rectangle drawing
+				queue_redraw()
+			elif is_drawing:
 				is_drawing = false
-	
-	if event is InputEventMouseMotion:
-		var local_pos = texture_rect.get_local_mouse_position()
-		if is_line_drawing: 
+				save_state()
+
+	var local_pos = texture_rect.get_local_mouse_position()
+	if event is InputEventMouseMotion and draw_area.has_point(local_pos):
+		if is_circle_drawing:
+			circle_radius = int(circle_start_pos.distance_to(local_pos)) 
+			queue_redraw() 
+		elif is_rectangle_drawing:
+			rectangle_width = int(local_pos.x - rectangle_start_pos.x) 
+			rectangle_height = int(local_pos.y - rectangle_start_pos.y)
+			queue_redraw()
+		elif is_line_drawing: 
 			line_end_pos = local_pos
 			queue_redraw() 
 		elif is_drawing and draw_area.has_point(local_pos):
@@ -205,3 +259,69 @@ func bucket_fill(pos: Vector2):
 		stack.append(p + Vector2(0, 1))
 		stack.append(p + Vector2(0, -1))
 	texture.update(image)
+	save_state()
+
+func draw_circle_image(center: Vector2, radius: int):
+	var width = image.get_width()
+	var height = image.get_height()
+	
+	for y in range(center.y - radius, center.y + radius + 1):
+		for x in range(center.x - radius, center.x + radius + 1):
+			var distance = (x - center.x) * (x - center.x) + (y - center.y) * (y - center.y)
+			if distance <= radius * radius:
+				var p = Vector2(x, y)
+				if draw_area.has_point(p) and p.x >= 0 and p.y >= 0 and p.x < width and p.y < height:
+					var local_pos = p - draw_area_position
+					Globals.DRAWING[local_pos.y][local_pos.x] = Globals.CURRENT_COLOR
+					if Globals.CURRENT_COLOR < 0:
+						image.set_pixelv(p, Color(1, 1, 1, 0))  # Transparent color
+					else:
+						image.set_pixelv(p, Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_COLOR])
+	texture.update(image)
+	queue_redraw()
+
+func save_state():
+	undo_stack.append([image.duplicate(), Globals.DRAWING.duplicate()])
+	if undo_stack.size() > 10:
+		undo_stack.pop_front() 
+	redo_stack.clear()
+
+func _on_undo():
+	if undo_stack.size() > 1:
+		var current_state = undo_stack.pop_back()
+		redo_stack.append(current_state)
+		var previous_state = undo_stack[-1]  
+		image = previous_state[0].duplicate()
+		Globals.DRAWING = previous_state[1].duplicate()
+		texture.update(image)
+		
+func _on_redo():
+	if redo_stack.size() > 0:
+		var state = redo_stack.pop_back()
+		image = state[0]
+		Globals.DRAWING = state[1]
+		texture.update(image)
+		undo_stack.append([image.duplicate(), Globals.DRAWING.duplicate()])  # Save to undo stack
+
+func draw_rectangle(start_pos: Vector2, width: int, height: int):
+	var img_width = image.get_width()
+	var img_height = image.get_height()
+	
+	var top_left = start_pos
+	var bottom_right = start_pos + Vector2(width, height)
+	
+	# Loop through the area inside the rectangle
+	for y in range(min(top_left.y, bottom_right.y), max(top_left.y, bottom_right.y) + 1):
+		for x in range(min(top_left.x, bottom_right.x), max(top_left.x, bottom_right.x) + 1):
+			if draw_area.has_point(Vector2(x, y)) and x >= 0 and y >= 0 and x < img_width and y < img_height:
+				var p = Vector2(x, y)
+				var local_pos = p - draw_area_position
+				Globals.DRAWING[local_pos.y][local_pos.x] = Globals.CURRENT_COLOR
+				if Globals.CURRENT_COLOR < 0:
+					image.set_pixelv(p, Color(1, 1, 1, 0))  # Transparent color
+				else:
+					image.set_pixelv(p, Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_COLOR])
+	texture.update(image)
+	queue_redraw()
+	
+	

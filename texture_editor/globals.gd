@@ -79,6 +79,8 @@ var CURRENT_BACKGROUND_COLOR = 7
 var MIRROR_ENABLED = false
 var BUCKET_ENABLED = false
 var LINE_ENABLED = false
+var CIRCLE_ENABLED = false
+var RECTANGLE_ENABLED = false
 var LAST_COLOR = 0
 
 func _ready() :
@@ -111,3 +113,4 @@ func set_click_color(color: Color) -> Color:
 	var click_color = Color(color) * 0.7
 	click_color.a = 1.0 
 	return click_color
+	
