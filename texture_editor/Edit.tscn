@@ -1,6 +1,6 @@
 [gd_scene load_steps=22 format=3 uid="uid://dalciw7io7v7l"]
 
-[ext_resource type="Theme" uid="uid://crjwisyi5hygl" path="res://themes/benthic_theme.tres" id="1_cw7ke"]
+[ext_resource type="Theme" uid="uid://buofucb4ds7xm" path="res://themes/benthic_theme.tres" id="1_cw7ke"]
 [ext_resource type="Script" path="res://color_selector.gd" id="3_1cahl"]
 [ext_resource type="PackedScene" uid="uid://c2pvv6jfm0a5p" path="res://player_models/Avatar.tscn" id="4_cv5l7"]
 [ext_resource type="Script" path="res://background_color.gd" id="4_gl0kp"]
