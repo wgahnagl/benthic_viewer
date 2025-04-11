@@ -4,9 +4,9 @@ var face_image
 var face_texture
 var base_image 
 var base_texture
-
 var pattern_image 
 var pattern_texture
+
 var mirror_enabled := true 
 
 var draw_area
@@ -25,6 +25,9 @@ var is_rectangle_drawing = false
 var rectangle_start_pos = Vector2()
 var rectangle_width = 0
 var rectangle_height = 0
+
+var stamp2_index = 0
+var stamp2_image = load("res://themes/stamps/stamp2_"+str(stamp2_index)+".svg").get_image()
 
 var undo_stack = []
 var redo_stack = []
@@ -71,7 +74,18 @@ func _ready():
 	var redo = %Redo
 	redo.connect("pressed", _on_redo)
 	
+	var stamp2 = %Stamp2
+	stamp2.connect("stamp_selected", _on_stamp_2)
+	
+	var submit = %Submit
+	submit.connect("pressed", save_texture)
+
 	save_state()
+
+func _on_stamp_2(i: int):
+	Globals.STAMP_2_ENABLED = true
+	stamp2_index = i
+	stamp2_image = load("res://themes/stamps/stamp2_"+str(stamp2_index)+".svg").get_image()
 
 func _on_clear():
 	for y in range(Globals.DRAWING.size()):
@@ -144,6 +158,16 @@ func _input(event):
 					rectangle_start_pos = local_pos
 					rectangle_width = 0  # Reset width on each press
 					rectangle_height = 0  # Reset height on each press
+				elif Globals.STAMP_1_ENABLED: 
+					draw_stamp_on_canvas(face_image, Globals.STAMP1_IMAGE, local_pos)
+					Globals.STAMP_1_ENABLED = false
+					%Stamp1.button_pressed = false
+					save_state()
+				elif Globals.STAMP_2_ENABLED: 
+					draw_stamp_on_canvas(face_image, stamp2_image, local_pos)
+					Globals.STAMP_2_ENABLED = false
+					%Stamp2.button_pressed = false
+					save_state()
 				else:
 					is_drawing = true
 					previous_pos = local_pos 
@@ -153,12 +177,12 @@ func _input(event):
 				is_line_drawing = false
 				draw_line_on_canvas(face_image, line_start_pos, line_end_pos)
 				save_state()
-			if is_circle_drawing:
+			elif is_circle_drawing:
 				is_circle_drawing = false
 				draw_circle_on_canvas(face_image, circle_start_pos, circle_radius)
 				face_texture.update(face_image)
 				save_state()
-			if is_rectangle_drawing:
+			elif is_rectangle_drawing:
 				is_rectangle_drawing = false
 				draw_rectangle_on_canvas(face_image, rectangle_start_pos, rectangle_width, rectangle_height)  # Finalize the rectangle drawing
 				face_texture.update(face_image)
@@ -168,7 +192,15 @@ func _input(event):
 				save_state()
 	var local_pos = texture_rect.get_local_mouse_position()
 	if event is InputEventMouseMotion and draw_area.has_point(local_pos):
-		if is_circle_drawing:
+		if Globals.STAMP_1_ENABLED:
+			var preview_image = undo_stack[-1][0].duplicate()
+			draw_stamp_on_canvas(preview_image, Globals.STAMP1_IMAGE, local_pos)
+			face_texture.update(preview_image)
+		if Globals.STAMP_2_ENABLED:
+			var preview_image = undo_stack[-1][0].duplicate()
+			draw_stamp_on_canvas(preview_image, stamp2_image, local_pos)
+			face_texture.update(preview_image)
+		elif is_circle_drawing:
 			circle_radius = int(circle_start_pos.distance_to(local_pos)) 
 			var preview_image = undo_stack[-1][0].duplicate()
 			draw_circle_on_canvas(preview_image, circle_start_pos, circle_radius)
@@ -188,6 +220,22 @@ func _input(event):
 			draw_between(previous_pos, local_pos)
 			previous_pos = local_pos
 
+func draw_stamp_on_canvas(image: Image, stamp: Image, pos:Vector2):
+	var img_width = image.get_width()
+	var img_height = image.get_height()
+	var stamp_width = stamp.get_width()
+	var stamp_height = stamp.get_height()
+
+	for y in range(stamp_height):
+		for x in range(stamp_width):
+			var canvas_pos = pos + Vector2(x, y)
+			if draw_area.has_point(canvas_pos) and canvas_pos.x >= 0 and canvas_pos.y >= 0 and canvas_pos.x < img_width and canvas_pos.y < img_height:
+				var local_pos = canvas_pos - draw_area_position
+				if stamp.get_pixel(x,y).a > 0.0:
+					image.set_pixelv(canvas_pos, Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_COLOR])
+					if image == face_image:
+						Globals.DRAWING[local_pos.y][local_pos.x] = Globals.CURRENT_COLOR
+				
 func draw_line_on_canvas(image: Image, start_pos: Vector2, end_pos: Vector2):
 	var num_steps = int(start_pos.distance_to(end_pos))
 	for step in range(num_steps):
@@ -290,7 +338,7 @@ func draw_circle_on_canvas(image: Image, center: Vector2, radius: int):
 						image.set_pixelv(p, Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_COLOR])
 
 func save_state():
-	undo_stack.append([face_image.duplicate(), Globals.DRAWING.duplicate()])
+	undo_stack.append([face_image.duplicate(), Globals.DRAWING.duplicate(true)])
 	if undo_stack.size() > 10:
 		undo_stack.pop_front() 
 	redo_stack.clear()
@@ -301,7 +349,7 @@ func _on_undo():
 		redo_stack.append(current_state)
 		var previous_state = undo_stack[-1]  
 		face_image = previous_state[0].duplicate()
-		Globals.DRAWING = previous_state[1].duplicate()
+		Globals.DRAWING = previous_state[1].duplicate(true)
 		face_texture.update(face_image)
 		
 func _on_redo():
@@ -330,3 +378,26 @@ func draw_rectangle_on_canvas(image: Image, start_pos: Vector2, width: int, heig
 					image.set_pixelv(p, Color(1, 1, 1, 0))  # Transparent color
 				else:
 					image.set_pixelv(p, Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_COLOR])
+
+func save_texture():	
+	var pass1 = mix_layers(base_image, pattern_image)
+	var pass2 = mix_layers(pass1, face_image)
+	var error = pass2.save_png(Globals.FILE_PATH)
+	if error == OK:
+		print("Image saved successfully!")
+	else:
+		print("Error saving image!")
+		
+func mix_layers(base_image: Image, mix_image: Image) -> Image:
+	var output_image = base_image.duplicate()
+	for x in range(base_image.get_width()):
+		for y in range(base_image.get_height()):
+			# Get pixels from both images
+			var base_pixel = base_image.get_pixel(x, y)
+			var mix_pixel = mix_image.get_pixel(x, y)
+			
+			if mix_pixel.a > .5:
+				output_image.set_pixel(x, y, mix_pixel)
+			else:
+				output_image.set_pixel(x, y, base_pixel)
+	return output_image

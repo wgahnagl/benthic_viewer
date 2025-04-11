@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://dalciw7io7v7l"]
+[gd_scene load_steps=22 format=3 uid="uid://dalciw7io7v7l"]
 
 [ext_resource type="Theme" uid="uid://crjwisyi5hygl" path="res://themes/benthic_theme.tres" id="1_cw7ke"]
 [ext_resource type="Script" path="res://color_selector.gd" id="3_1cahl"]
@@ -17,6 +17,7 @@
 [ext_resource type="Script" path="res://line.gd" id="13_vrssl"]
 [ext_resource type="Script" path="res://circle_tool.gd" id="14_hpdie"]
 [ext_resource type="Script" path="res://rectangle_tool.gd" id="15_evk0c"]
+[ext_resource type="Script" path="res://stamp_1.gd" id="16_ju5n5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4edc5"]
 bg_color = Color(1, 1, 1, 1)
@@ -164,6 +165,7 @@ theme_override_constants/separation = -20
 
 [node name="PanelContainer2" type="VBoxContainer" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2"]
 layout_mode = 2
+theme_override_constants/separation = -14
 
 [node name="BackgroundColors" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/PanelContainer2"]
 unique_name_in_owner = true
@@ -176,6 +178,16 @@ size_flags_vertical = 4
 tooltip_text = "Set Background Color"
 theme_type_variation = &"CircleButton"
 script = ExtResource("4_gl0kp")
+
+[node name="CurrentColor" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/PanelContainer2"]
+unique_name_in_owner = true
+z_index = 1
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 2
+tooltip_text = "Active color"
+theme_type_variation = &"CircleButton"
 
 [node name="PanelContainer" type="PanelContainer" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2"]
 layout_mode = 2
@@ -364,17 +376,32 @@ theme_type_variation = &"CircleButton"
 toggle_mode = true
 script = ExtResource("15_evk0c")
 
-[node name="Swirl Stamp" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
+[node name="Stamp1" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Swirl Stamp"
 theme_type_variation = &"CircleButton"
+toggle_mode = true
+script = ExtResource("16_ju5n5")
 
-[node name="Eye Stamp" type="MenuButton" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
+[node name="Stamp2" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Eye Stamp"
 theme_type_variation = &"CircleButton"
-flat = false
+toggle_mode = true
 script = ExtResource("5_ax413")
+
+[node name="StampPopup" type="PopupPanel" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer/Stamp2"]
+
+[node name="GridContainer" type="GridContainer" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer/Stamp2/StampPopup"]
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 95.0
+offset_bottom = 95.0
+theme_override_constants/h_separation = 20
+theme_override_constants/v_separation = 30
+columns = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer"]
 layout_mode = 2
@@ -408,10 +435,11 @@ tooltip_text = "Redo"
 text = "Redo"
 
 [node name="Submit" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit"]
+unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Submit"
 theme_type_variation = &"SubmitButton"
 text = "Submit"
 
-[connection signal="pressed" from="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer/Eye Stamp" to="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer/Eye Stamp" method="_on_pressed"]
+[connection signal="pressed" from="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer/Stamp2" to="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer/Stamp2" method="_on_pressed"]
 [connection signal="pressed" from="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/VBoxContainer/PaletteSwitcher" to="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/VBoxContainer/PaletteSwitcher" method="_on_pressed"]
