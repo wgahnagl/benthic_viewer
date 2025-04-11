@@ -65,9 +65,10 @@ const PALETTES = [[
 #this is the drawing encoded as numbers
 var DRAWING = []
 
-var CURRENT_PALETTE = PALETTES[0]
+var CURRENT_PALETTE = 0
 var CURRENT_COLOR = 0
 var CURRENT_BRUSH_SIZE = 3
+var CURRENT_BACKGROUND_COLOR = 7
 
 func _ready() :
 	for _i in range(200):
@@ -75,3 +76,27 @@ func _ready() :
 		for _j in range(200):
 			row.append(-1)
 		DRAWING.append(row)
+
+
+func set_button_color(button: Button, palette: int, color: int):
+	var stylebox = button.get_theme_stylebox("normal")
+	var new_stylebox = stylebox.duplicate()
+	new_stylebox.modulate_color = Globals.PALETTES[palette][color]
+
+	var hover_stylebox = new_stylebox.duplicate()
+	hover_stylebox.modulate_color  = set_hover_color(Globals.PALETTES[palette][color])
+	var click_stylebox = new_stylebox.duplicate()
+	click_stylebox.modulate_color = set_click_color(Globals.PALETTES[palette][color])
+	button.add_theme_stylebox_override("normal", new_stylebox)
+	button.add_theme_stylebox_override("hover", hover_stylebox)
+	button.add_theme_stylebox_override("pressed", click_stylebox)
+
+func set_hover_color(color: Color) -> Color:
+	var hover_color = Color(color) * 0.9
+	hover_color.a = 1.0
+	return hover_color
+
+func set_click_color(color: Color) -> Color:
+	var click_color = Color(color) * 0.7
+	click_color.a = 1.0 
+	return click_color

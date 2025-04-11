@@ -2,6 +2,12 @@ extends Control
 
 var image
 var texture
+var base_image 
+var base_texture
+
+var pattern_image 
+var pattern_texture
+
 var draw_area
 var is_drawing = false
 var previous_pos = Vector2()
@@ -16,7 +22,7 @@ var grid = []
 
 func _ready():
 	image = Image.create(1500, 1500, false, Image.FORMAT_RGBA8)
-	image.fill(Color(1, 1, 1, 1)) 
+	image.fill(Color(1, 1, 1, 0)) 
 	
 	texture_rect.set_position(-draw_area_position)
 	texture = ImageTexture.create_from_image(image)
@@ -30,10 +36,14 @@ func _ready():
 	full_rect.texture = at 
 	
 	full_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+
 	set_player_texture(texture)
 	
 	var palette_selector = %PaletteSwitcher
 	palette_selector.connect("palette_selected", _on_palette_selected)
+	
+	var background_color = %BackgroundColors
+	background_color.connect("pressed", _on_background_change)
 
 func _on_palette_selected(id):
 	for y in range(Globals.DRAWING.size()):
@@ -42,27 +52,32 @@ func _on_palette_selected(id):
 			var color_id = row[x]
 			var p = Vector2(x + draw_area_position.x, y + draw_area_position.y)
 			if color_id < 0: 
-				image.set_pixelv(p, Color(1,1,1,1))
+				image.set_pixelv(p, Color(1,1,1,0))
 			else: 
-				image.set_pixelv(p, Globals.CURRENT_PALETTE[color_id])
+				image.set_pixelv(p, Globals.PALETTES[id][color_id])
+	base_image.fill(Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_BACKGROUND_COLOR])
+	base_texture.update(base_image)
 	texture.update(image)
 
 func set_player_texture(new_texture: ImageTexture):
-	# Assuming your player has a MeshInstance3D with a material
-	var mesh_instance = %Player/CustomArmature/Skeleton3D/player  # Find the mesh instance inside the player
-	if mesh_instance:
-		var custom_material = mesh_instance.get_active_material(0)
-		print(custom_material)
-		if custom_material:
-			if custom_material is StandardMaterial3D:
-				# If you're using a custom shader, you can set it like this:
-				custom_material.set_texture(0, new_texture)
-			else:
-				print("Material type not supported!")
-		else:
-			print("MeshInstance3D has no material!")
-	else:
-		print("MeshInstance3D not found in player!")
+	base_image = Image.create(1500, 1500, false, Image.FORMAT_RGBA8)
+	base_image.fill(Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_BACKGROUND_COLOR]) 
+	base_texture = ImageTexture.create_from_image(base_image)
+	
+	pattern_image = Image.create(1500, 1500, false, Image.FORMAT_RGBA8)
+	pattern_image.fill(Color(0, 0, 0, 0)) 
+	pattern_texture = ImageTexture.create_from_image(pattern_image)
+	
+	var mesh_instance = %Player/CustomArmature/Skeleton3D/player 
+	var kitty_ears = %Player/"CustomArmature/Skeleton3D/kitty ears"
+
+
+	var material = load("res://PlayerLayers.tres") as ShaderMaterial
+	material.set_shader_parameter("base_texture", base_texture)
+	material.set_shader_parameter("pattern_texture", pattern_texture)
+	material.set_shader_parameter("face_texture", new_texture)
+	mesh_instance.set_surface_override_material(0, material)
+	kitty_ears.set_surface_override_material(0, material)
 		
 func _input(event):
 	if event is InputEventMouseButton:
@@ -90,7 +105,7 @@ func draw_at(pos: Vector2):
 			if draw_area.has_point(p) and p.x >= 0 and p.y >= 0 and p.x < width and p.y < height:
 				var local_pos = p - draw_area_position
 				Globals.DRAWING[local_pos.y][local_pos.x] = Globals.CURRENT_COLOR  # Note the flip (y, x)
-				image.set_pixelv(p, Globals.CURRENT_PALETTE[Globals.CURRENT_COLOR])
+				image.set_pixelv(p, Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_COLOR])
 	texture.update(image)
 	queue_redraw()
 
@@ -99,3 +114,7 @@ func draw_between(start_pos: Vector2, end_pos: Vector2):
 	for step in range(num_steps):
 		var lerp_pos = start_pos.lerp(end_pos, step / float(num_steps))
 		draw_at(lerp_pos) 
+
+func _on_background_change():
+	base_image.fill(Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_COLOR])
+	base_texture.update(base_image)
