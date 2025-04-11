@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dalciw7io7v7l"]
+[gd_scene load_steps=10 format=3 uid="uid://dalciw7io7v7l"]
 
 [ext_resource type="Theme" uid="uid://clx8ih486ovrq" path="res://themes/benthic_theme.tres" id="1_cw7ke"]
 [ext_resource type="Script" path="res://color_selector.gd" id="3_1cahl"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://canvas_layer.gd" id="5_2qexi"]
 [ext_resource type="Script" path="res://eye_stamp.gd" id="5_ax413"]
 [ext_resource type="Script" path="res://palette_switcher.gd" id="5_nkqv8"]
+[ext_resource type="Script" path="res://size_slider.gd" id="5_q41qr"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_mvc5d"]
 
@@ -198,11 +199,19 @@ layout_mode = 2
 size_flags_horizontal = 0
 theme_type_variation = &"CircleButton2"
 
-[node name="Clear2" type="Button" parent="MarginContainer/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/VBoxContainer"]
+[node name="Container" type="Control" parent="MarginContainer/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
-size_flags_horizontal = 0
-tooltip_text = "Line Width"
-theme_type_variation = &"CircleButton2"
+
+[node name="HSlider" type="VSlider" parent="MarginContainer/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+min_value = 3.0
+max_value = 9.0
+value = 3.0
+script = ExtResource("5_q41qr")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2

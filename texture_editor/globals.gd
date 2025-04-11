@@ -67,7 +67,7 @@ var DRAWING = []
 
 var CURRENT_PALETTE = PALETTES[0]
 var CURRENT_COLOR = 0
-var CURRENT_BRUSH_SIZE = 5
+var CURRENT_BRUSH_SIZE = 3
 
 func _ready() :
 	for _i in range(200):
