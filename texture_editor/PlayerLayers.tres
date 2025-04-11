@@ -1,0 +1,35 @@
+[gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://denuxui516ooi"]
+
+[ext_resource type="Texture2D" uid="uid://byaqxc2aaquvi" path="res://player_models/muffing_skin.png" id="1_f85kn"]
+[ext_resource type="Texture2D" uid="uid://bhfkadcgmqf8f" path="res://icon.svg" id="2_ah6jy"]
+[ext_resource type="Texture2D" uid="uid://dyl0arrg7j03r" path="res://themes/images/button_circle.svg" id="3_i2feb"]
+
+[sub_resource type="GDScript" id="GDScript_ysuoj"]
+
+[sub_resource type="Shader" id="Shader_4nhb6"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back;
+
+uniform sampler2D base_texture;
+uniform sampler2D pattern_texture;
+uniform sampler2D face_texture;
+
+void fragment() {
+	vec4 base = texture(base_texture, UV);
+	vec4 pattern = texture(pattern_texture, UV);
+	vec4 face = texture(face_texture, UV);
+	vec4 final = base;
+	final = mix(final, pattern, pattern.a);
+	final = mix(final, face, face.a);
+
+	ALBEDO = final.rgb;
+	ALPHA = final.a;
+}"
+script = SubResource("GDScript_ysuoj")
+
+[resource]
+render_priority = 0
+shader = SubResource("Shader_4nhb6")
+shader_parameter/base_texture = ExtResource("1_f85kn")
+shader_parameter/pattern_texture = ExtResource("3_i2feb")
+shader_parameter/face_texture = ExtResource("2_ah6jy")

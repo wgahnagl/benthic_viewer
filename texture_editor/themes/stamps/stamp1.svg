@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="43.361103"
+   height="41.59449"
+   viewBox="0 0 43.361103 41.59449"
+   version="1.1"
+   id="svg1"
+   inkscape:export-filename="bitmap.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px">
+    <inkscape:page
+       x="0"
+       y="0"
+       width="43.361103"
+       height="41.59449"
+       id="page2"
+       margin="0"
+       bleed="0" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-3.614234,-3.5146396)">
+    <path
+       sodipodi:type="spiral"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:6.29291;stroke-linecap:round;stroke-dasharray:none"
+       id="path1"
+       sodipodi:cx="11.240506"
+       sodipodi:cy="9.6000004"
+       sodipodi:expansion="1"
+       sodipodi:revolution="2"
+       sodipodi:radius="22.255234"
+       sodipodi:argument="-18.068018"
+       sodipodi:t0="0"
+       d="M 11.240506,9.6000004 C 12.428595,10.778952 10.237464,11.783174 9.2810109,11.574682 6.689082,11.009684 6.2599652,7.6941961 7.291142,5.6810098 9.1356755,2.0798918 13.959931,1.6402331 17.118992,3.6759541 21.755042,6.6634567 22.20955,13.170808 19.139234,17.437982 15.046986,23.125452 6.8049178,23.591115 1.4430297,19.473411 -5.3043591,14.2917 -5.7792944,4.2932484 -0.6075863,-2.1569713 5.6560451,-9.9690517 17.422017,-10.452317 24.956973,-4.2227742 33.836659,3.118526 34.327744,16.65851 27.037963,25.275963"
+       transform="rotate(-74.017896,29.413618,9.6007091)" />
+  </g>
+</svg>

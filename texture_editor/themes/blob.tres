@@ -1,0 +1,11 @@
+[gd_resource type="StyleBoxTexture" load_steps=2 format=3 uid="uid://rqk8mffp08wb"]
+
+[ext_resource type="Texture2D" uid="uid://dffit7ng1wnd8" path="res://themes/images/blob.svg" id="1_j5nn3"]
+
+[resource]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+texture = ExtResource("1_j5nn3")
+modulate_color = Color(0, 0, 0, 1)
