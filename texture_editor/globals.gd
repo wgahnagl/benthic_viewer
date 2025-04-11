@@ -1,5 +1,12 @@
 extends Node
 
+var COLOR1 = Color("#3498db")
+var COLOR2 = Color("#00c0d1")
+var COLOR3 = Color("#8ae7d4")
+var COLOR4 = Color("#86ea1f")
+var TEXT = Color("#ffffff")
+var BACKGROUND = Color("#1e1e1e")
+
 const PALETTES = [[
 	Color("ff595eff"),
 	Color("ff924cff"),
@@ -70,6 +77,9 @@ var CURRENT_COLOR = 0
 var CURRENT_BRUSH_SIZE = 3
 var CURRENT_BACKGROUND_COLOR = 7
 var MIRROR_ENABLED = false
+var BUCKET_ENABLED = false
+var LINE_ENABLED = false
+var LAST_COLOR = 0
 
 func _ready() :
 	for _i in range(200):

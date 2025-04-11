@@ -8,7 +8,6 @@ var base_texture
 var pattern_image 
 var pattern_texture
 var mirror_enabled := true 
-var mirror_pos = 100
 
 var draw_area
 var is_drawing = false
@@ -46,7 +45,19 @@ func _ready():
 	
 	var background_color = %BackgroundColors
 	background_color.connect("pressed", _on_background_change)
+	
+	var clear = %Clear
+	clear.connect("pressed", _on_clear)
 
+func _on_clear():
+	for y in range(Globals.DRAWING.size()):
+		var row = Globals.DRAWING[y]
+		for x in range(row.size()):
+			var p = Vector2(x + draw_area_position.x, y + draw_area_position.y)
+			Globals.DRAWING[x][y] = -1
+			image.set_pixelv(p, Color(1,1,1,0))
+	texture.update(image)
+	
 func _on_palette_selected(id):
 	for y in range(Globals.DRAWING.size()):
 		var row = Globals.DRAWING[y]
@@ -73,7 +84,6 @@ func set_player_texture(new_texture: ImageTexture):
 	var mesh_instance = %Player/CustomArmature/Skeleton3D/player 
 	var kitty_ears = %Player/"CustomArmature/Skeleton3D/kitty ears"
 
-
 	var shader_material = load("res://PlayerLayers.tres") as ShaderMaterial
 	shader_material.set_shader_parameter("base_texture", base_texture)
 	shader_material.set_shader_parameter("pattern_texture", pattern_texture)
@@ -87,9 +97,12 @@ func _input(event):
 		if event.pressed:
 			var local_pos = texture_rect.get_local_mouse_position()
 			if draw_area.has_point(local_pos):
-				is_drawing = true
-				previous_pos = local_pos 
-				draw_at(local_pos)
+				if Globals.BUCKET_ENABLED:
+					bucket_fill(local_pos)
+				else:
+					is_drawing = true
+					previous_pos = local_pos 
+					draw_at(local_pos)
 		else:
 			is_drawing = false
 	
@@ -108,7 +121,10 @@ func draw_at(pos: Vector2):
 			if draw_area.has_point(p) and p.x >= 0 and p.y >= 0 and p.x < width and p.y < height:
 				var local_pos = p - draw_area_position
 				Globals.DRAWING[local_pos.y][local_pos.x] = Globals.CURRENT_COLOR  # Note the flip (y, x)
-				image.set_pixelv(p, Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_COLOR])
+				if Globals.CURRENT_COLOR < 0:
+					image.set_pixelv(p, Color(1,1,1,0))
+				else:
+					image.set_pixelv(p, Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_COLOR])
 				
 				if Globals.MIRROR_ENABLED:
 					var mirror_x = draw_area_position.x * 2 + draw_area_size.x - p.x - 1
@@ -116,7 +132,11 @@ func draw_at(pos: Vector2):
 					if mirror_pos.x >= 0 and mirror_pos.x < width:
 						var mirror_local_pos = mirror_pos - draw_area_position
 						Globals.DRAWING[mirror_local_pos.y][mirror_local_pos.x] = Globals.CURRENT_COLOR
-						image.set_pixelv(mirror_pos, Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_COLOR])
+						
+						if Globals.CURRENT_COLOR < 0:
+							image.set_pixelv(mirror_pos, Color(1,1,1,0))
+						else:
+							image.set_pixelv(mirror_pos, Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_COLOR])
 	texture.update(image)
 	queue_redraw()
 
@@ -127,5 +147,38 @@ func draw_between(start_pos: Vector2, end_pos: Vector2):
 		draw_at(lerp_pos) 
 
 func _on_background_change():
-	base_image.fill(Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_COLOR])
-	base_texture.update(base_image)
+	if Globals.CURRENT_COLOR >= 0:
+		base_image.fill(Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_COLOR])
+		base_texture.update(base_image)
+		
+func bucket_fill(pos: Vector2):
+	var width = image.get_width()
+	var height = image.get_height()
+	if pos.x < 0 or pos.y < 0 or pos.x >= width or pos.y >= height:
+		return
+	var target_color = image.get_pixelv(pos)
+	var new_color: Color = Color(1, 1, 1, 0) if Globals.CURRENT_COLOR == -1 else Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_COLOR]
+	if target_color == new_color:
+		return
+	var stack: Array[Vector2] = [pos]
+	while stack.size() > 0:
+		var p = stack.pop_back()
+		if p.x < 0 or p.y < 0 or p.x >= width or p.y >= height:
+			continue
+		if not draw_area.has_point(p):
+			continue
+		var current_color = image.get_pixelv(p)
+		if current_color != target_color:
+			continue
+		var local_pos = p - draw_area_position
+		if Globals.CURRENT_COLOR < 0:
+			image.set_pixelv(p, Color(1,1,1,0))
+			Globals.DRAWING[local_pos.y][local_pos.x] = -1
+		else:
+			image.set_pixelv(p, new_color)
+			Globals.DRAWING[local_pos.y][local_pos.x] = Globals.CURRENT_COLOR
+		stack.append(p + Vector2(1, 0))
+		stack.append(p + Vector2(-1, 0))
+		stack.append(p + Vector2(0, 1))
+		stack.append(p + Vector2(0, -1))
+	texture.update(image)
