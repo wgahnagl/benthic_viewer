@@ -81,15 +81,21 @@ var BUCKET_ENABLED = false
 var LINE_ENABLED = false
 var CIRCLE_ENABLED = false
 var RECTANGLE_ENABLED = false
+var STAMP_1_ENABLED = false
+var STAMP_2_ENABLED = false
 var LAST_COLOR = 0
 
+var FILE_PATH = "user://saved_texture.png"
+
+var STAMP1_IMAGE = load("res://themes/stamps/stamp1.svg").get_image()
+
+#initialize the canvas
 func _ready() :
 	for _i in range(200):
 		var row = []
 		for _j in range(200):
 			row.append(-1)
 		DRAWING.append(row)
-
 
 func set_button_color(button: Button, palette: int, color: int):
 	var stylebox = button.get_theme_stylebox("normal")

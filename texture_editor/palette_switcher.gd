@@ -13,9 +13,7 @@ func _ready() -> void:
 	var swatch_width: int = palettes.get_width()
 	
 	for i in range(num_palettes):
-		var rect := Rect2(0, i * swatch_height , swatch_width, swatch_height)
-		print(rect)
-		
+		var rect := Rect2(0, i * swatch_height , swatch_width, swatch_height)		
 		var cropped := Image.create(swatch_width, swatch_height, false, Image.FORMAT_RGB8)
 		cropped.blit_rect(palettes, rect, Vector2.ZERO)
 		
@@ -26,6 +24,7 @@ func _ready() -> void:
 	popup.connect("id_pressed", set_palette)
 
 func set_palette( id ): 
+	Globals.set_button_color(%CurrentColor, id, Globals.CURRENT_COLOR)
 	emit_signal("palette_selected", id)
 
 func _on_pressed() -> void:

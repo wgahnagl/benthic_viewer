@@ -124,8 +124,7 @@ func setPopup(theme: Theme, corner_radius: int, margin_size: int):
 	stylebox.content_margin_right = margin_size
 	stylebox.content_margin_bottom = margin_size
 	
-	theme.set_stylebox("normal", "PopupPanel", stylebox)
-	theme.set_stylebox("normal", "PopupMenu", stylebox)
+	theme.set_stylebox("panel", "PopupPanel", stylebox)
 	theme.set_stylebox("panel", "PopupMenu", stylebox)
 	
 	hover_stylebox.bg_color = set_hover_color(SECONDARY)
@@ -134,6 +133,7 @@ func setPopup(theme: Theme, corner_radius: int, margin_size: int):
 	
 	theme.set_stylebox("item_selected", "PopupMenu", stylebox)  # Selected effect, if needed
 	
+
 func setBasePanel(theme: Theme, margin_size: int): 
 	theme.set_type_variation("BasePanel", "PanelContainer")
 	var stylebox = load("res://themes/blob.tres")
