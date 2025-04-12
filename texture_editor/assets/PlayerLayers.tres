@@ -1,8 +1,8 @@
-[gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://denuxui516ooi"]
+[gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://ba8ud03qq3a0x"]
 
 [ext_resource type="Texture2D" uid="uid://byaqxc2aaquvi" path="res://player_models/muffing_skin.png" id="1_f85kn"]
 [ext_resource type="Texture2D" uid="uid://bhfkadcgmqf8f" path="res://icon.svg" id="2_ah6jy"]
-[ext_resource type="Texture2D" uid="uid://dyl0arrg7j03r" path="res://themes/images/button_circle.svg" id="3_i2feb"]
+[ext_resource type="Texture2D" uid="uid://c8346h6hjdckb" path="res://themes/images/button_circle.svg" id="3_i2feb"]
 
 [sub_resource type="GDScript" id="GDScript_ysuoj"]
 

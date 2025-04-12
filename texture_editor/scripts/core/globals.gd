@@ -7,6 +7,14 @@ var COLOR4 = Color("#86ea1f")
 var TEXT = Color("#ffffff")
 var BACKGROUND = Color("#1e1e1e")
 
+var DRAW_AREA_OFFSET = Vector2(250, 120) 
+var DRAW_AREA_SIZE = Vector2(200,200)
+var DRAW_AREA = Rect2(DRAW_AREA_OFFSET, DRAW_AREA_SIZE) 
+var SUPPRESS_SAVE = false
+
+var UNDO_STACK = []
+var REDO_STACK = []
+
 const PALETTES = [[
 	Color("ff595eff"),
 	Color("ff924cff"),

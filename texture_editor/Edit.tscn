@@ -1,23 +1,27 @@
-[gd_scene load_steps=22 format=3 uid="uid://dalciw7io7v7l"]
+[gd_scene load_steps=26 format=3 uid="uid://x4xy8b8t06cg"]
 
-[ext_resource type="Theme" uid="uid://buofucb4ds7xm" path="res://themes/benthic_theme.tres" id="1_cw7ke"]
-[ext_resource type="Script" path="res://color_selector.gd" id="3_1cahl"]
-[ext_resource type="PackedScene" uid="uid://c2pvv6jfm0a5p" path="res://player_models/Avatar.tscn" id="4_cv5l7"]
-[ext_resource type="Script" path="res://background_color.gd" id="4_gl0kp"]
-[ext_resource type="Script" path="res://grid_size.tres.gd" id="4_pf2em"]
-[ext_resource type="Script" path="res://canvas_layer.gd" id="5_2qexi"]
-[ext_resource type="Script" path="res://eye_stamp.gd" id="5_ax413"]
-[ext_resource type="Script" path="res://palette_switcher.gd" id="5_nkqv8"]
-[ext_resource type="Script" path="res://size_slider.gd" id="5_q41qr"]
-[ext_resource type="Script" path="res://symmetry.gd" id="6_5wnrp"]
-[ext_resource type="Script" path="res://face_guide.gd" id="7_286jv"]
-[ext_resource type="Script" path="res://pen.gd" id="10_hmjak"]
-[ext_resource type="Script" path="res://eraser.gd" id="10_rlr78"]
-[ext_resource type="Script" path="res://bucket.gd" id="11_pouh1"]
-[ext_resource type="Script" path="res://line.gd" id="13_vrssl"]
-[ext_resource type="Script" path="res://circle_tool.gd" id="14_hpdie"]
-[ext_resource type="Script" path="res://rectangle_tool.gd" id="15_evk0c"]
-[ext_resource type="Script" path="res://stamp_1.gd" id="16_ju5n5"]
+[ext_resource type="Theme" uid="uid://cwts635v08byp" path="res://themes/benthic_theme.tres" id="1_cw7ke"]
+[ext_resource type="Script" path="res://scripts/tools/color_selector.gd" id="3_1cahl"]
+[ext_resource type="PackedScene" uid="uid://c2pvv6jfm0a5p" path="res://assets/player_models/Avatar.tscn" id="4_cv5l7"]
+[ext_resource type="Script" path="res://scripts/ui/background_color.gd" id="4_gl0kp"]
+[ext_resource type="Script" path="res://scripts/ui/grid_size.tres.gd" id="4_pf2em"]
+[ext_resource type="Script" path="res://scripts/tools/canvas_layer.gd" id="5_2qexi"]
+[ext_resource type="Script" path="res://scripts/tools/eye_stamp.gd" id="5_ax413"]
+[ext_resource type="Script" path="res://scripts/tools/palette_switcher.gd" id="5_nkqv8"]
+[ext_resource type="Script" path="res://scripts/tools/size_slider.gd" id="5_q41qr"]
+[ext_resource type="Script" path="res://scripts/tools/symmetry.gd" id="6_5wnrp"]
+[ext_resource type="Script" path="res://scripts/tools/face_guide.gd" id="7_286jv"]
+[ext_resource type="Script" path="res://scripts/tools/clear.gd" id="8_6edx4"]
+[ext_resource type="Script" path="res://scripts/tools/pen.gd" id="10_hmjak"]
+[ext_resource type="Script" path="res://scripts/tools/eraser.gd" id="10_rlr78"]
+[ext_resource type="Script" path="res://scripts/tools/bucket.gd" id="11_pouh1"]
+[ext_resource type="Script" path="res://scripts/tools/line.gd" id="13_vrssl"]
+[ext_resource type="Script" path="res://scripts/tools/circle_tool.gd" id="14_hpdie"]
+[ext_resource type="Script" path="res://scripts/tools/rectangle_tool.gd" id="15_evk0c"]
+[ext_resource type="Script" path="res://scripts/tools/stamp_1.gd" id="16_ju5n5"]
+[ext_resource type="Script" path="res://scripts/tools/undo.gd" id="19_gh24w"]
+[ext_resource type="Script" path="res://scripts/tools/redo.gd" id="20_ww4qq"]
+[ext_resource type="Script" path="res://scripts/tools/submit.gd" id="22_5ntdf"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4edc5"]
 bg_color = Color(1, 1, 1, 1)
@@ -255,6 +259,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 theme_type_variation = &"CircleButton2"
+script = ExtResource("8_6edx4")
 
 [node name="Container" type="Control" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/VBoxContainer"]
 custom_minimum_size = Vector2(0, 30)
@@ -326,6 +331,7 @@ columns = 2
 script = ExtResource("4_pf2em")
 
 [node name="Pen" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -347,6 +353,7 @@ toggle_mode = true
 script = ExtResource("10_rlr78")
 
 [node name="Bucket" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 tooltip_text = "Bucket"
@@ -355,6 +362,7 @@ toggle_mode = true
 script = ExtResource("11_pouh1")
 
 [node name="Line" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 tooltip_text = "Line"
@@ -363,6 +371,7 @@ toggle_mode = true
 script = ExtResource("13_vrssl")
 
 [node name="Circle Tool" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Circle Tool"
 theme_type_variation = &"CircleButton"
@@ -370,6 +379,7 @@ toggle_mode = true
 script = ExtResource("14_hpdie")
 
 [node name="Rectangle Tool" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Rectangle Tool"
 theme_type_variation = &"CircleButton"
@@ -427,12 +437,14 @@ unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Undo"
 text = "Undo"
+script = ExtResource("19_gh24w")
 
 [node name="Redo" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Redo"
 text = "Redo"
+script = ExtResource("20_ww4qq")
 
 [node name="Submit" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit"]
 unique_name_in_owner = true
@@ -440,6 +452,7 @@ layout_mode = 2
 tooltip_text = "Submit"
 theme_type_variation = &"SubmitButton"
 text = "Submit"
+script = ExtResource("22_5ntdf")
 
 [connection signal="pressed" from="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer/Stamp2" to="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer/Stamp2" method="_on_pressed"]
 [connection signal="pressed" from="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/VBoxContainer/PaletteSwitcher" to="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/VBoxContainer/PaletteSwitcher" method="_on_pressed"]
