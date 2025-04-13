@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://d4ajjoiri5d4o"
-path="res://.godot/imported/Avatar.dae-ce3dc4103b1bb0e5e31ce6051e87f192.scn"
+path="res://.godot/imported/Avatar.dae-dd9ee8b24266bb44060b662f29b43e22.scn"
 
 [deps]
 
-source_file="res://player_models/Avatar.dae"
-dest_files=["res://.godot/imported/Avatar.dae-ce3dc4103b1bb0e5e31ce6051e87f192.scn"]
+source_file="res://assets/player_models/Avatar.dae"
+dest_files=["res://.godot/imported/Avatar.dae-dd9ee8b24266bb44060b662f29b43e22.scn"]
 
 [params]
 

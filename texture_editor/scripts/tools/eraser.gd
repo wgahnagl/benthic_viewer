@@ -5,6 +5,8 @@ func _ready():
 	$".".connect("pressed", _on_button_press)
 
 func _on_button_press():
+	Globals.STAMP_1_ENABLED = false
+	Globals.STAMP_2_ENABLED = false
 	if Globals.CURRENT_COLOR == -1: 
 		Globals.CURRENT_COLOR = Globals.LAST_COLOR
 		%Eraser.button_pressed = false

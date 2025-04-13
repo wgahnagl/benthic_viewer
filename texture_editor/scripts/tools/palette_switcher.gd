@@ -33,3 +33,17 @@ func _on_pressed() -> void:
 	var button_size = $".".size
 	popup.position = Vector2(button_position.x + button_size.x, button_position.y)
 	popup.popup()
+
+func update_palette(face_image: Image, face_texture: Texture, base_image: Image, base_texture: Texture, id: int):
+	for y in range(Globals.DRAWING.size()):
+		var row = Globals.DRAWING[y]
+		for x in range(row.size()):
+			var color_id = row[x]
+			var p = Vector2(x + Globals.DRAW_AREA_OFFSET.x, y + Globals.DRAW_AREA_OFFSET.y)
+			if color_id < 0: 
+				face_image.set_pixelv(p, Color(1,1,1,0))
+			else: 
+				face_image.set_pixelv(p, Globals.PALETTES[id][color_id])
+	base_image.fill(Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_BACKGROUND_COLOR])
+	base_texture.update(base_image)
+	face_texture.update(face_image)
