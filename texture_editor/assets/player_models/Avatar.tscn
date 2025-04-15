@@ -199,10 +199,12 @@ bones/21/rotation = Quaternion(2.98023e-08, 1.11759e-08, 1.11759e-08, 1)
 bones/21/scale = Vector3(1, 1, 1)
 
 [node name="player" type="MeshInstance3D" parent="CustomArmature/Skeleton3D"]
+unique_name_in_owner = true
 mesh = SubResource("ArrayMesh_ofwax")
 skeleton = NodePath("")
 
 [node name="kitty ears" type="MeshInstance3D" parent="CustomArmature/Skeleton3D"]
+unique_name_in_owner = true
 mesh = SubResource("ArrayMesh_67701")
 skeleton = NodePath("")
 

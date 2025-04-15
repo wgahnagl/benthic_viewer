@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d2riqcg6ega6m"
-path="res://.godot/imported/button_circle.svg-484d6305b9f7802ce2a9d7302b82083b.ctex"
+uid="uid://334p3cxeuc60"
+path="res://.godot/imported/square.svg-b2fb71396d05d2efd4775b64df33dacb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://themes/images/button_circle.svg"
-dest_files=["res://.godot/imported/button_circle.svg-484d6305b9f7802ce2a9d7302b82083b.ctex"]
+source_file="res://themes/icons/square.svg"
+dest_files=["res://.godot/imported/square.svg-b2fb71396d05d2efd4775b64df33dacb.ctex"]
 
 [params]
 

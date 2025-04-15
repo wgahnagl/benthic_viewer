@@ -1,27 +1,42 @@
-[gd_scene load_steps=26 format=3 uid="uid://x4xy8b8t06cg"]
+[gd_scene load_steps=41 format=3 uid="uid://x4xy8b8t06cg"]
 
-[ext_resource type="Theme" uid="uid://cwts635v08byp" path="res://themes/benthic_theme.tres" id="1_cw7ke"]
+[ext_resource type="Theme" uid="uid://1athg4k14bpa" path="res://themes/benthic_theme.tres" id="1_cw7ke"]
 [ext_resource type="Script" path="res://scripts/tools/color_selector.gd" id="3_1cahl"]
 [ext_resource type="PackedScene" uid="uid://c2pvv6jfm0a5p" path="res://assets/player_models/Avatar.tscn" id="4_cv5l7"]
 [ext_resource type="Script" path="res://scripts/ui/background_color.gd" id="4_gl0kp"]
 [ext_resource type="Script" path="res://scripts/ui/grid_size.tres.gd" id="4_pf2em"]
 [ext_resource type="Script" path="res://scripts/tools/canvas_layer.gd" id="5_2qexi"]
 [ext_resource type="Script" path="res://scripts/tools/eye_stamp.gd" id="5_ax413"]
+[ext_resource type="Script" path="res://scripts/tools/pattern_color.gd" id="5_iwgwj"]
 [ext_resource type="Script" path="res://scripts/tools/palette_switcher.gd" id="5_nkqv8"]
 [ext_resource type="Script" path="res://scripts/tools/size_slider.gd" id="5_q41qr"]
 [ext_resource type="Script" path="res://scripts/tools/symmetry.gd" id="6_5wnrp"]
+[ext_resource type="Texture2D" uid="uid://c1pdml27mf2oi" path="res://themes/icons/butterfly.svg" id="6_nn7ci"]
 [ext_resource type="Script" path="res://scripts/tools/face_guide.gd" id="7_286jv"]
 [ext_resource type="Script" path="res://scripts/tools/clear.gd" id="8_6edx4"]
+[ext_resource type="Texture2D" uid="uid://bmb61rheh8gei" path="res://themes/icons/smileyface.svg" id="8_hwrgw"]
+[ext_resource type="Texture2D" uid="uid://cqs3ajlhfvglx" path="res://themes/icons/clear.svg" id="10_2k8go"]
 [ext_resource type="Script" path="res://scripts/tools/pen.gd" id="10_hmjak"]
 [ext_resource type="Script" path="res://scripts/tools/eraser.gd" id="10_rlr78"]
 [ext_resource type="Script" path="res://scripts/tools/bucket.gd" id="11_pouh1"]
+[ext_resource type="Texture2D" uid="uid://c4o5yo7swqk2r" path="res://themes/icons/pencil.svg" id="11_vxssl"]
+[ext_resource type="Texture2D" uid="uid://xtwwxu4up3k1" path="res://themes/icons/eraser.svg" id="13_ct8d4"]
 [ext_resource type="Script" path="res://scripts/tools/line.gd" id="13_vrssl"]
 [ext_resource type="Script" path="res://scripts/tools/circle_tool.gd" id="14_hpdie"]
+[ext_resource type="Script" path="res://pattern_1.gd" id="14_imcng"]
+[ext_resource type="Texture2D" uid="uid://dvvxcs6ft7yb7" path="res://themes/icons/bucket.svg" id="15_e0wh2"]
 [ext_resource type="Script" path="res://scripts/tools/rectangle_tool.gd" id="15_evk0c"]
 [ext_resource type="Script" path="res://scripts/tools/stamp_1.gd" id="16_ju5n5"]
+[ext_resource type="Texture2D" uid="uid://d1j0fllxpg1gx" path="res://themes/icons/line.svg" id="17_yk2bf"]
 [ext_resource type="Script" path="res://scripts/tools/undo.gd" id="19_gh24w"]
+[ext_resource type="Texture2D" uid="uid://wse5iqkpcfa0" path="res://themes/icons/circle.svg" id="19_ubfcn"]
 [ext_resource type="Script" path="res://scripts/tools/redo.gd" id="20_ww4qq"]
+[ext_resource type="Texture2D" uid="uid://334p3cxeuc60" path="res://themes/icons/square.svg" id="21_ihetf"]
 [ext_resource type="Script" path="res://scripts/tools/submit.gd" id="22_5ntdf"]
+[ext_resource type="Texture2D" uid="uid://txvb6m5bay7q" path="res://themes/icons/swirl.svg" id="23_jr677"]
+[ext_resource type="Texture2D" uid="uid://c1qd3dgk3olj6" path="res://themes/icons/eye.svg" id="25_kstex"]
+[ext_resource type="Texture2D" uid="uid://dk4cahf8mn88g" path="res://themes/icons/undo.svg" id="31_qll6u"]
+[ext_resource type="Texture2D" uid="uid://c0yiurwqhsovc" path="res://themes/icons/redo.svg" id="33_fa1kj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4edc5"]
 bg_color = Color(1, 1, 1, 1)
@@ -173,7 +188,7 @@ theme_override_constants/separation = -14
 
 [node name="BackgroundColors" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/PanelContainer2"]
 unique_name_in_owner = true
-z_index = 2
+z_index = 3
 z_as_relative = false
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -182,6 +197,18 @@ size_flags_vertical = 4
 tooltip_text = "Set Background Color"
 theme_type_variation = &"CircleButton"
 script = ExtResource("4_gl0kp")
+
+[node name="PatternColor" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/PanelContainer2"]
+unique_name_in_owner = true
+z_index = 2
+z_as_relative = false
+custom_minimum_size = Vector2(45, 45)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Set Pattern Color"
+theme_type_variation = &"CircleButton"
+script = ExtResource("5_iwgwj")
 
 [node name="CurrentColor" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/PanelContainer2"]
 unique_name_in_owner = true
@@ -199,7 +226,8 @@ size_flags_vertical = 0
 theme_type_variation = &"ToolPanel"
 
 [node name="FaceEdit" type="PanelContainer" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/PanelContainer"]
-custom_minimum_size = Vector2(200, 200)
+clip_contents = true
+custom_minimum_size = Vector2(300, 300)
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 4
@@ -244,22 +272,73 @@ theme_override_constants/separation = 1
 
 [node name="Symmetry" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/VBoxContainer"]
 layout_mode = 2
+tooltip_text = "Mirror"
 theme_type_variation = &"CircleButton2"
 toggle_mode = true
 script = ExtResource("6_5wnrp")
 
+[node name="TextureRect" type="TextureRect" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/VBoxContainer/Symmetry"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -14.0
+offset_top = -14.0
+offset_right = 18.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("6_nn7ci")
+
 [node name="Guide" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/VBoxContainer"]
 layout_mode = 2
+tooltip_text = "Guide"
 theme_type_variation = &"CircleButton2"
 toggle_mode = true
 script = ExtResource("7_286jv")
+
+[node name="TextureRect" type="TextureRect" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/VBoxContainer/Guide"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -14.0
+offset_top = -16.0
+offset_right = 18.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("8_hwrgw")
 
 [node name="Clear" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
+tooltip_text = "Clear"
 theme_type_variation = &"CircleButton2"
 script = ExtResource("8_6edx4")
+
+[node name="TextureRect" type="TextureRect" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/VBoxContainer/Clear"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -11.0
+offset_top = -11.0
+offset_right = 21.0
+offset_bottom = 21.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("10_2k8go")
 
 [node name="Container" type="Control" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/VBoxContainer"]
 custom_minimum_size = Vector2(0, 30)
@@ -270,7 +349,7 @@ custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 3
-min_value = 3.0
+min_value = 2.0
 max_value = 9.0
 value = 3.0
 script = ExtResource("5_q41qr")
@@ -280,9 +359,11 @@ layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 0
 
-[node name="Button" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
+[node name="Pattern1" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"CircleButton2"
+script = ExtResource("14_imcng")
 
 [node name="Button4" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
 layout_mode = 2
@@ -339,6 +420,7 @@ tooltip_text = "Pen"
 theme_type_variation = &"CircleButton"
 toggle_mode = true
 button_pressed = true
+icon = ExtResource("11_vxssl")
 script = ExtResource("10_hmjak")
 
 [node name="Eraser" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
@@ -350,6 +432,7 @@ tooltip_text = "Eraser
 "
 theme_type_variation = &"CircleButton"
 toggle_mode = true
+icon = ExtResource("13_ct8d4")
 script = ExtResource("10_rlr78")
 
 [node name="Bucket" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
@@ -359,6 +442,7 @@ size_flags_horizontal = 4
 tooltip_text = "Bucket"
 theme_type_variation = &"CircleButton"
 toggle_mode = true
+icon = ExtResource("15_e0wh2")
 script = ExtResource("11_pouh1")
 
 [node name="Line" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
@@ -368,6 +452,7 @@ size_flags_horizontal = 4
 tooltip_text = "Line"
 theme_type_variation = &"CircleButton"
 toggle_mode = true
+icon = ExtResource("17_yk2bf")
 script = ExtResource("13_vrssl")
 
 [node name="Circle Tool" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
@@ -376,6 +461,7 @@ layout_mode = 2
 tooltip_text = "Circle Tool"
 theme_type_variation = &"CircleButton"
 toggle_mode = true
+icon = ExtResource("19_ubfcn")
 script = ExtResource("14_hpdie")
 
 [node name="Rectangle Tool" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
@@ -384,6 +470,7 @@ layout_mode = 2
 tooltip_text = "Rectangle Tool"
 theme_type_variation = &"CircleButton"
 toggle_mode = true
+icon = ExtResource("21_ihetf")
 script = ExtResource("15_evk0c")
 
 [node name="Stamp1" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
@@ -392,6 +479,7 @@ layout_mode = 2
 tooltip_text = "Swirl Stamp"
 theme_type_variation = &"CircleButton"
 toggle_mode = true
+icon = ExtResource("23_jr677")
 script = ExtResource("16_ju5n5")
 
 [node name="Stamp2" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
@@ -400,6 +488,7 @@ layout_mode = 2
 tooltip_text = "Eye Stamp"
 theme_type_variation = &"CircleButton"
 toggle_mode = true
+icon = ExtResource("25_kstex")
 script = ExtResource("5_ax413")
 
 [node name="StampPopup" type="PopupPanel" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer/Stamp2"]
@@ -420,9 +509,9 @@ theme_override_constants/separation = 20
 
 [node name="PaletteSwitcher" type="MenuButton" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 100)
+custom_minimum_size = Vector2(100, 130)
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_vertical = 6
 tooltip_text = "Change color scheme"
 theme_type_variation = &"PaintPalette"
 keep_pressed_outside = true
@@ -431,19 +520,23 @@ script = ExtResource("5_nkqv8")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
 
 [node name="Undo" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Undo"
-text = "Undo"
+icon = ExtResource("31_qll6u")
+flat = true
 script = ExtResource("19_gh24w")
 
 [node name="Redo" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Redo"
-text = "Redo"
+theme_type_variation = &"FlatButton"
+icon = ExtResource("33_fa1kj")
 script = ExtResource("20_ww4qq")
 
 [node name="Submit" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit"]

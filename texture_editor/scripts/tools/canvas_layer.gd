@@ -30,7 +30,7 @@ var stamp2_image = load("res://themes/stamps/stamp2_"+str(stamp2_index)+".svg").
 @onready var full_rect: TextureRect = $display
 
 func _ready():
-	face_image = Image.create(1500, 1500, false, Image.FORMAT_RGBA8)
+	face_image = Image.create(1024, 1024, false, Image.FORMAT_RGBA8)
 	face_image.fill(Color(1, 1, 1, 0)) 
 	
 	texture_rect.set_position(-Globals.DRAW_AREA_OFFSET)
@@ -52,6 +52,9 @@ func _ready():
 	var background_color = %BackgroundColors
 	background_color.connect("pressed", _on_background_change)
 	
+	var pattern_color = %PatternColor
+	pattern_color.connect("pressed", _on_pattern_color_change)
+	
 	var clear = %Clear
 	clear.connect("pressed", _on_clear)
 	
@@ -67,7 +70,17 @@ func _ready():
 	var submit = %Submit
 	submit.connect("pressed", _on_save)
 	
+	var pattern1 = %Pattern1
+	pattern1.connect("pressed", _on_pattern.bind(1))
+	
 	save_state()
+
+func _on_pattern(i: int): 
+	match i: 
+		1: 
+			var tex = load("res://assets/patterns/littleguy_kitty_stripe.png") as Texture2D
+			var img = tex.get_image()
+			pattern_texture.update(img)
 
 func _on_undo():
 	%Undo.undo(face_image, face_texture)
@@ -80,6 +93,9 @@ func _on_save():
 
 func _on_background_change():
 	%BackgroundColors.change_background(base_image, base_texture)
+
+func _on_pattern_color_change():
+	%PatternColor.change_pattern_color(pattern_image, pattern_texture)
 
 func _on_stamp_2(i: int):
 	Globals.STAMP_2_ENABLED = true
@@ -97,13 +113,14 @@ func _on_clear():
 	save_state()
 
 func set_player_texture(new_texture: ImageTexture):
-	base_image = Image.create(1500, 1500, false, Image.FORMAT_RGBA8)
+	base_image = Image.create(1024, 104, false, Image.FORMAT_RGBA8)
 	base_image.fill(Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_BACKGROUND_COLOR]) 
 	base_texture = ImageTexture.create_from_image(base_image)
 	
-	pattern_image = Image.create(1500, 1500, false, Image.FORMAT_RGBA8)
+	pattern_image = Image.create(1024, 1024, false, Image.FORMAT_RGBA8)
 	pattern_image.fill(Color(0, 0, 0, 0)) 
 	pattern_texture = ImageTexture.create_from_image(pattern_image)
+	
 	
 	var mesh_instance = %Player/CustomArmature/Skeleton3D/player 
 	var kitty_ears = %Player/"CustomArmature/Skeleton3D/kitty ears"
@@ -122,10 +139,17 @@ func _input(event):
 			_on_undo()
 		elif event.keycode == KEY_Y and (event.ctrl_pressed or event.meta_pressed):
 			_on_redo()
-
+	# Your existing variables
+	var display_size: Vector2 = $".".size  
+	var scale: Vector2 = Globals.DRAW_AREA_SIZE / display_size
+	
+	# not sure why this works, but it works for every size
+	var scaling_factor: float = (2.0 / 3.0) * (display_size[0] / 100.0) -1
+	var scaled_offset: Vector2 = (Globals.DRAW_AREA_OFFSET * scaling_factor)
+	var pos: Vector2 = (texture_rect.get_local_mouse_position() + scaled_offset) * scale
+	var local_pos = pos
 	if event is InputEventMouseButton:
 		if event.pressed:
-			var local_pos = texture_rect.get_local_mouse_position()
 			if Globals.DRAW_AREA.has_point(local_pos):
 				if Globals.BUCKET_ENABLED:
 					%Bucket.bucket_fill(face_image, face_texture, local_pos)
@@ -141,8 +165,8 @@ func _input(event):
 				elif Globals.RECTANGLE_ENABLED:
 					is_rectangle_drawing = true
 					rectangle_start_pos = local_pos
-					rectangle_width = 0  # Reset width on each press
-					rectangle_height = 0  # Reset height on each press
+					rectangle_width = 0
+					rectangle_height = 0
 				elif Globals.STAMP_1_ENABLED: 
 					%Stamp1.draw_stamp_on_canvas(face_image, Globals.STAMP1_IMAGE, local_pos)
 					Globals.STAMP_1_ENABLED = false
@@ -169,13 +193,12 @@ func _input(event):
 				save_state()
 			elif is_rectangle_drawing:
 				is_rectangle_drawing = false
-				%"Rectangle Tool".draw_rectangle_on_canvas(face_image, rectangle_start_pos, rectangle_width, rectangle_height)  # Finalize the rectangle drawing
+				%"Rectangle Tool".draw_rectangle_on_canvas(face_image, rectangle_start_pos, rectangle_width, rectangle_height)
 				face_texture.update(face_image)
 				save_state()
 			elif is_drawing:
 				is_drawing = false
 				save_state()
-	var local_pos = texture_rect.get_local_mouse_position()
 	if event is InputEventMouseMotion and Globals.DRAW_AREA.has_point(local_pos):
 		if Globals.STAMP_1_ENABLED:
 			var preview_image = Globals.UNDO_STACK[-1][0].duplicate()

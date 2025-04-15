@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="32"
+   height="32"
+   viewBox="0 0 32 32"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#7f7f7f"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px">
+    <inkscape:page
+       x="0"
+       y="0"
+       width="32"
+       height="32"
+       id="page2"
+       margin="0"
+       bleed="0" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       sodipodi:type="spiral"
+       style="fill:none;fill-rule:evenodd;stroke:#ffffff;stroke-width:5.2;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+       id="path1"
+       sodipodi:cx="18.150341"
+       sodipodi:cy="17.457859"
+       sodipodi:expansion="1"
+       sodipodi:revolution="2"
+       sodipodi:radius="16.592592"
+       sodipodi:argument="-14.289315"
+       sodipodi:t0="0"
+       d="m 18.150341,17.457859 c -0.189132,-1.233473 1.569386,-0.863499 2.050114,-0.314351 1.302742,1.488159 0.08944,3.66543 -1.421413,4.414579 C 16.076477,22.898138 12.990334,21.021996 12,18.400911 10.546643,14.554364 13.160363,10.452966 16.892938,9.2574037 21.867873,7.6639077 27.013824,11.040315 28.40091,15.886106 30.146417,21.984038 25.996585,28.186691 20.036445,29.758542 12.817918,31.662264 5.5523065,26.733503 3.7995442,19.658314 1.7339745,11.320448 7.4448483,2.9882126 15.635535,1.0569484"
+       transform="matrix(0.91007163,0,0,0.91007163,1.3573335,1.7886607)" />
+  </g>
+</svg>

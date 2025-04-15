@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d2riqcg6ega6m"
-path="res://.godot/imported/button_circle.svg-484d6305b9f7802ce2a9d7302b82083b.ctex"
+uid="uid://c1pdml27mf2oi"
+path="res://.godot/imported/butterfly.svg-6d64c66131a672cf00a6f86ee4f3df1b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://themes/images/button_circle.svg"
-dest_files=["res://.godot/imported/button_circle.svg-484d6305b9f7802ce2a9d7302b82083b.ctex"]
+source_file="res://themes/icons/butterfly.svg"
+dest_files=["res://.godot/imported/butterfly.svg-6d64c66131a672cf00a6f86ee4f3df1b.ctex"]
 
 [params]
 
