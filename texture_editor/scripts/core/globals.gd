@@ -7,7 +7,7 @@ var COLOR4 = Color("#86ea1f")
 var TEXT = Color("#ffffff")
 var BACKGROUND = Color("#1e1e1e")
 
-var DRAW_AREA_OFFSET = Vector2(160, 70)
+var DRAW_AREA_OFFSET = Vector2(166, 70)
 var DRAW_AREA_SIZE = Vector2(150, 150)
 var DRAW_AREA = Rect2(DRAW_AREA_OFFSET, DRAW_AREA_SIZE)
 var SUPPRESS_SAVE = false
@@ -67,6 +67,19 @@ const PALETTES = [
 		Color("ad8164ff"),
 		Color("b48c72ff"),
 		Color("bb967fff")
+	],
+	[
+		Color("9ca0a9"),
+		Color("c3ccdb"),
+		Color("cdd5e1"),
+		Color("a298a1"),
+		Color("736572"),
+		Color("4a3335"),
+		Color("494850"),
+		Color("3b3e48"),
+		Color("17171b"),
+		Color("63635b"),
+		Color("000000"),
 	]
 ]
 
@@ -76,6 +89,7 @@ var DRAWING = []
 var CURRENT_PALETTE = 0
 var CURRENT_COLOR = 0
 var CURRENT_BRUSH_SIZE = 3
+var CURRENT_DRAW_SIZE = 0
 var CURRENT_BACKGROUND_COLOR = 7
 var CURRENT_PATTERN_COLOR = 4
 var MIRROR_ENABLED = false

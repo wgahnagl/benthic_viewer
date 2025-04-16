@@ -18,6 +18,6 @@ func mix_layers(base_image: Image, mix_image: Image) -> Image:
 			var mix_pixel = mix_image.get_pixel(x, y)
 			if mix_pixel.a > 0.5:
 				output_image.set_pixel(x, y, mix_pixel)
-			else: 
+			else:
 				output_image.set_pixel(x, y, base_image.get_pixel(x, y))
 	return output_image

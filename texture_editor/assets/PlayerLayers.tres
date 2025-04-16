@@ -8,7 +8,7 @@
 [sub_resource type="Shader" id="Shader_4nhb6"]
 resource_local_to_scene = true
 code = "shader_type spatial;
-render_mode blend_mix, depth_draw_opaque, cull_back;
+render_mode depth_draw_opaque, cull_back;
 
 uniform sampler2D base_texture;
 uniform sampler2D pattern_texture;
@@ -22,17 +22,14 @@ void fragment() {
 	if (pattern.a > 0.5) {
 		final = pattern;
 	}
-
 	if (face.a > 0.5) {
 		final = face;
 	}
 	ALBEDO = final.rgb;
-	ALPHA = final.a;
 }"
 script = SubResource("GDScript_ysuoj")
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_v8su1"]
-load_path = "res://.godot/imported/button_circle.svg-484d6305b9f7802ce2a9d7302b82083b.s3tc.ctex"
 
 [resource]
 render_priority = 0

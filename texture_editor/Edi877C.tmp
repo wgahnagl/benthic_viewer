@@ -1,0 +1,712 @@
+[gd_scene load_steps=51 format=3 uid="uid://x4xy8b8t06cg"]
+
+[ext_resource type="Theme" uid="uid://uiuxcde47rnc" path="res://themes/benthic_theme.tres" id="1_cw7ke"]
+[ext_resource type="Script" path="res://rotate_player.gd" id="2_i1vqu"]
+[ext_resource type="Script" path="res://scripts/tools/color_selector.gd" id="3_1cahl"]
+[ext_resource type="PackedScene" uid="uid://bn74u4catqsiv" path="res://assets/player_models/Avatar.dae" id="3_idfm6"]
+[ext_resource type="Script" path="res://scripts/ui/background_color.gd" id="4_gl0kp"]
+[ext_resource type="Script" path="res://reset_rotation.gd" id="4_jbdow"]
+[ext_resource type="Script" path="res://scripts/ui/grid_size.tres.gd" id="4_pf2em"]
+[ext_resource type="Script" path="res://scripts/tools/canvas_layer.gd" id="5_2qexi"]
+[ext_resource type="Script" path="res://scripts/tools/eye_stamp.gd" id="5_ax413"]
+[ext_resource type="Script" path="res://scripts/tools/pattern_color.gd" id="5_iwgwj"]
+[ext_resource type="Script" path="res://scripts/tools/palette_switcher.gd" id="5_nkqv8"]
+[ext_resource type="Script" path="res://rotate_left.gd" id="5_pphja"]
+[ext_resource type="Script" path="res://scripts/tools/size_slider.gd" id="5_q41qr"]
+[ext_resource type="Script" path="res://scripts/tools/symmetry.gd" id="6_5wnrp"]
+[ext_resource type="Texture2D" uid="uid://c1pdml27mf2oi" path="res://themes/icons/butterfly.svg" id="6_nn7ci"]
+[ext_resource type="Script" path="res://scripts/tools/face_guide.gd" id="7_286jv"]
+[ext_resource type="Script" path="res://scripts/tools/clear.gd" id="8_6edx4"]
+[ext_resource type="Texture2D" uid="uid://bmb61rheh8gei" path="res://themes/icons/smileyface.svg" id="8_hwrgw"]
+[ext_resource type="Script" path="res://rotate_right.gd" id="8_y2h3h"]
+[ext_resource type="Texture2D" uid="uid://cqs3ajlhfvglx" path="res://themes/icons/clear.svg" id="10_2k8go"]
+[ext_resource type="Script" path="res://scripts/tools/pen.gd" id="10_hmjak"]
+[ext_resource type="Script" path="res://scripts/tools/eraser.gd" id="10_rlr78"]
+[ext_resource type="Script" path="res://scripts/tools/bucket.gd" id="11_pouh1"]
+[ext_resource type="Texture2D" uid="uid://c4o5yo7swqk2r" path="res://themes/icons/pencil.svg" id="11_vxssl"]
+[ext_resource type="Texture2D" uid="uid://xtwwxu4up3k1" path="res://themes/icons/eraser.svg" id="13_ct8d4"]
+[ext_resource type="Texture2D" uid="uid://c3fe3cqkwcd5q" path="res://themes/icons/guide.png" id="13_gx275"]
+[ext_resource type="Script" path="res://scripts/tools/line.gd" id="13_vrssl"]
+[ext_resource type="Script" path="res://scripts/tools/circle_tool.gd" id="14_hpdie"]
+[ext_resource type="Texture2D" uid="uid://dvvxcs6ft7yb7" path="res://themes/icons/bucket.svg" id="15_e0wh2"]
+[ext_resource type="Script" path="res://scripts/tools/rectangle_tool.gd" id="15_evk0c"]
+[ext_resource type="Script" path="res://scripts/tools/stamp_1.gd" id="16_ju5n5"]
+[ext_resource type="Texture2D" uid="uid://d1j0fllxpg1gx" path="res://themes/icons/line.svg" id="17_yk2bf"]
+[ext_resource type="Script" path="res://scripts/tools/undo.gd" id="19_gh24w"]
+[ext_resource type="Texture2D" uid="uid://wse5iqkpcfa0" path="res://themes/icons/circle.svg" id="19_ubfcn"]
+[ext_resource type="Script" path="res://scripts/tools/redo.gd" id="20_ww4qq"]
+[ext_resource type="Texture2D" uid="uid://bygupwjw5xcv1" path="res://themes/icons/stripes.svg" id="21_0wbid"]
+[ext_resource type="Texture2D" uid="uid://cup37cyhm1ssm" path="res://themes/icons/x.svg" id="21_3u87t"]
+[ext_resource type="Texture2D" uid="uid://b74y7r4ecc3wv" path="res://themes/icons/polkadot.svg" id="21_72n1p"]
+[ext_resource type="Texture2D" uid="uid://334p3cxeuc60" path="res://themes/icons/square.svg" id="21_ihetf"]
+[ext_resource type="Script" path="res://scripts/tools/submit.gd" id="22_5ntdf"]
+[ext_resource type="Texture2D" uid="uid://chv1q46ueu4yh" path="res://themes/icons/spots.svg" id="22_54vcu"]
+[ext_resource type="Texture2D" uid="uid://cpanjeny46sqm" path="res://themes/icons/star.svg" id="22_egoww"]
+[ext_resource type="Texture2D" uid="uid://d2gsgw0mgl8oc" path="res://themes/icons/hair.svg" id="23_dj1lw"]
+[ext_resource type="Texture2D" uid="uid://txvb6m5bay7q" path="res://themes/icons/swirl.svg" id="23_jr677"]
+[ext_resource type="Texture2D" uid="uid://c1qd3dgk3olj6" path="res://themes/icons/eye.svg" id="25_kstex"]
+[ext_resource type="Texture2D" uid="uid://dk4cahf8mn88g" path="res://themes/icons/undo.svg" id="31_qll6u"]
+[ext_resource type="Texture2D" uid="uid://c0yiurwqhsovc" path="res://themes/icons/redo.svg" id="33_fa1kj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4edc5"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_axer5"]
+texture = ExtResource("13_gx275")
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_mvc5d"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_cw7ke")
+
+[node name="Control" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="PanelContainer" type="PanelContainer" parent="Control"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_type_variation = &"BasePanel"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = -40
+
+[node name="ModelViewer" type="SubViewportContainer" parent="Control/PanelContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+size_flags_stretch_ratio = 2.01
+script = ExtResource("2_i1vqu")
+
+[node name="SubViewport" type="SubViewport" parent="Control/PanelContainer/HBoxContainer/VBoxContainer/ModelViewer"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(277, 487)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="Control/PanelContainer/HBoxContainer/VBoxContainer/ModelViewer/SubViewport"]
+transform = Transform3D(0.0543835, -0.148958, 0.987347, 0.0110455, 0.98884, 0.148575, -0.998459, 0.00282573, 0.0554219, 0.691448, 0.559006, 0.0824398)
+current = true
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Control/PanelContainer/HBoxContainer/VBoxContainer/ModelViewer/SubViewport"]
+transform = Transform3D(-0.0115348, -0.421985, 0.906529, -0.00536897, 0.906603, 0.421951, -0.999919, 0, -0.0127231, 0.868022, 1.25057, -0.570359)
+light_color = Color(0.8856, 0.837684, 0.756467, 1)
+light_energy = 0.674
+light_indirect_energy = 0.667
+light_volumetric_fog_energy = 0.583
+shadow_enabled = true
+
+[node name="Node3D" type="Node3D" parent="Control/PanelContainer/HBoxContainer/VBoxContainer/ModelViewer/SubViewport"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0403159)
+
+[node name="Player" parent="Control/PanelContainer/HBoxContainer/VBoxContainer/ModelViewer/SubViewport/Node3D" instance=ExtResource("3_idfm6")]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0418931, 0, 0.323541)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/PanelContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="RotateLeft" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Rotate Left
+"
+theme_type_variation = &"CircleButton2"
+icon = ExtResource("31_qll6u")
+script = ExtResource("5_pphja")
+
+[node name="ResetRotation" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Recenter"
+theme_type_variation = &"CircleButton"
+script = ExtResource("4_jbdow")
+
+[node name="RotateRight" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Rotate Right"
+theme_type_variation = &"CircleButton2"
+icon = ExtResource("33_fa1kj")
+script = ExtResource("8_y2h3h")
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Control/PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="Color Selector" type="GridContainer" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_constants/h_separation = -3
+columns = 11
+script = ExtResource("3_1cahl")
+
+[node name="Button" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/Color Selector"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+theme_type_variation = &"PaintDrop"
+
+[node name="Button2" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/Color Selector"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+theme_type_variation = &"PaintDrop"
+
+[node name="Button3" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/Color Selector"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+theme_type_variation = &"PaintDrop"
+
+[node name="Button4" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/Color Selector"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+theme_type_variation = &"PaintDrop"
+
+[node name="Button5" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/Color Selector"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+theme_type_variation = &"PaintDrop"
+
+[node name="Button6" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/Color Selector"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+theme_type_variation = &"PaintDrop"
+
+[node name="Button7" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/Color Selector"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+theme_type_variation = &"PaintDrop"
+
+[node name="Button8" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/Color Selector"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+theme_type_variation = &"PaintDrop"
+
+[node name="Button9" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/Color Selector"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+theme_type_variation = &"PaintDrop"
+
+[node name="Button10" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/Color Selector"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+theme_type_variation = &"PaintDrop"
+
+[node name="Button11" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/Color Selector"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+theme_type_variation = &"PaintDrop"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 2
+theme_override_constants/separation = -20
+
+[node name="PanelContainer2" type="VBoxContainer" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+theme_override_constants/separation = -14
+
+[node name="BackgroundColors" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/PanelContainer2"]
+unique_name_in_owner = true
+z_index = 3
+z_as_relative = false
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Set Background Color"
+theme_type_variation = &"CircleButton"
+script = ExtResource("4_gl0kp")
+
+[node name="PatternColor" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/PanelContainer2"]
+unique_name_in_owner = true
+z_index = 2
+z_as_relative = false
+custom_minimum_size = Vector2(45, 45)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Set Pattern Color"
+theme_type_variation = &"CircleButton"
+script = ExtResource("5_iwgwj")
+
+[node name="CurrentColor" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/PanelContainer2"]
+unique_name_in_owner = true
+z_index = 1
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 2
+tooltip_text = "Active color"
+theme_type_variation = &"CircleButton"
+
+[node name="PanelContainer" type="PanelContainer" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_type_variation = &"ToolPanel"
+
+[node name="FaceEdit" type="PanelContainer" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/PanelContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+script = ExtResource("5_2qexi")
+
+[node name="display" type="TextureRect" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/PanelContainer/FaceEdit"]
+z_index = 1
+layout_mode = 2
+size_flags_stretch_ratio = 0.46
+
+[node name="CanvasBackground" type="Panel" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/PanelContainer/FaceEdit"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4edc5")
+
+[node name="FaceGuide" type="Panel" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/PanelContainer/FaceEdit"]
+unique_name_in_owner = true
+visible = false
+modulate = Color(0.81257, 2.88785e-07, 0.483036, 0.196078)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_axer5")
+
+[node name="TextureRect" type="TextureRect" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/PanelContainer/FaceEdit"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/PanelContainer/FaceEdit"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TextureRect" type="TextureRect" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/PanelContainer/FaceEdit/Control"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 200.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = SubResource("CanvasTexture_mvc5d")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 1
+
+[node name="Symmetry" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "Mirror"
+theme_type_variation = &"CircleButton2"
+toggle_mode = true
+script = ExtResource("6_5wnrp")
+
+[node name="TextureRect" type="TextureRect" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/VBoxContainer/Symmetry"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -14.0
+offset_top = -14.0
+offset_right = 18.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("6_nn7ci")
+
+[node name="Guide" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "Guide"
+theme_type_variation = &"CircleButton2"
+toggle_mode = true
+script = ExtResource("7_286jv")
+
+[node name="TextureRect" type="TextureRect" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/VBoxContainer/Guide"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -14.0
+offset_top = -16.0
+offset_right = 18.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("8_hwrgw")
+
+[node name="Clear" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+tooltip_text = "Clear"
+theme_type_variation = &"CircleButton2"
+script = ExtResource("8_6edx4")
+
+[node name="TextureRect" type="TextureRect" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/VBoxContainer/Clear"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -11.0
+offset_top = -11.0
+offset_right = 21.0
+offset_bottom = 21.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("10_2k8go")
+
+[node name="Container" type="Control" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="HSlider" type="VSlider" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+min_value = 2.0
+max_value = 9.0
+value = 3.0
+script = ExtResource("5_q41qr")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 0
+
+[node name="Pattern0" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Clear Pattern"
+theme_type_variation = &"CircleButton2"
+
+[node name="TextureRect" type="TextureRect" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer/Pattern0"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("21_3u87t")
+
+[node name="Pattern1" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+tooltip_text = "Stripes"
+theme_type_variation = &"CircleButton2"
+
+[node name="TextureRect" type="TextureRect" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer/Pattern1"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("21_0wbid")
+
+[node name="Pattern2" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+tooltip_text = "Spots"
+theme_type_variation = &"CircleButton2"
+
+[node name="TextureRect" type="TextureRect" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer/Pattern2"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("22_54vcu")
+
+[node name="Pattern3" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+tooltip_text = "Hair"
+theme_type_variation = &"CircleButton2"
+
+[node name="TextureRect" type="TextureRect" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer/Pattern3"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("23_dj1lw")
+
+[node name="Pattern4" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+tooltip_text = "Polka Dots"
+theme_type_variation = &"CircleButton2"
+
+[node name="TextureRect" type="TextureRect" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer/Pattern4"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("21_72n1p")
+
+[node name="Pattern5" type="Button" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+tooltip_text = "Stars"
+theme_type_variation = &"CircleButton2"
+
+[node name="TextureRect" type="TextureRect" parent="Control/PanelContainer/HBoxContainer/VBoxContainer2/HBoxContainer/Pattern5"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("22_egoww")
+
+[node name="Tools and submit" type="VBoxContainer" parent="Control/PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 0
+
+[node name="Tools" type="PanelContainer" parent="Control/PanelContainer/HBoxContainer/Tools and submit"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 8
+size_flags_stretch_ratio = 0.33
+theme_type_variation = &"ToolPanel"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools"]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 2
+script = ExtResource("4_pf2em")
+
+[node name="Pen" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Pen"
+theme_type_variation = &"CircleButton"
+toggle_mode = true
+button_pressed = true
+icon = ExtResource("11_vxssl")
+script = ExtResource("10_hmjak")
+
+[node name="Eraser" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Eraser
+"
+theme_type_variation = &"CircleButton"
+toggle_mode = true
+icon = ExtResource("13_ct8d4")
+script = ExtResource("10_rlr78")
+
+[node name="Bucket" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+tooltip_text = "Bucket"
+theme_type_variation = &"CircleButton"
+toggle_mode = true
+icon = ExtResource("15_e0wh2")
+script = ExtResource("11_pouh1")
+
+[node name="Line" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+tooltip_text = "Line"
+theme_type_variation = &"CircleButton"
+toggle_mode = true
+icon = ExtResource("17_yk2bf")
+script = ExtResource("13_vrssl")
+
+[node name="Circle Tool" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Circle Tool"
+theme_type_variation = &"CircleButton"
+toggle_mode = true
+icon = ExtResource("19_ubfcn")
+script = ExtResource("14_hpdie")
+
+[node name="Rectangle Tool" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Rectangle Tool"
+theme_type_variation = &"CircleButton"
+toggle_mode = true
+icon = ExtResource("21_ihetf")
+script = ExtResource("15_evk0c")
+
+[node name="Stamp1" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Swirl Stamp"
+theme_type_variation = &"CircleButton"
+toggle_mode = true
+icon = ExtResource("23_jr677")
+script = ExtResource("16_ju5n5")
+
+[node name="Stamp2" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Eye Stamp"
+theme_type_variation = &"CircleButton"
+toggle_mode = true
+icon = ExtResource("25_kstex")
+script = ExtResource("5_ax413")
+
+[node name="StampPopup" type="PopupPanel" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer/Stamp2"]
+
+[node name="GridContainer" type="GridContainer" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer/Stamp2/StampPopup"]
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 95.0
+offset_bottom = 95.0
+theme_override_constants/h_separation = 20
+theme_override_constants/v_separation = 30
+columns = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+
+[node name="PaletteSwitcher" type="MenuButton" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 130)
+layout_mode = 2
+size_flags_vertical = 6
+tooltip_text = "Change color scheme"
+theme_type_variation = &"PaintPalette"
+keep_pressed_outside = true
+flat = false
+script = ExtResource("5_nkqv8")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+
+[node name="Undo" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Undo"
+icon = ExtResource("31_qll6u")
+flat = true
+script = ExtResource("19_gh24w")
+
+[node name="Redo" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Redo"
+theme_type_variation = &"FlatButton"
+icon = ExtResource("33_fa1kj")
+script = ExtResource("20_ww4qq")
+
+[node name="Submit" type="Button" parent="Control/PanelContainer/HBoxContainer/Tools and submit"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Submit"
+theme_type_variation = &"SubmitButton"
+text = "Submit"
+script = ExtResource("22_5ntdf")
+
+[connection signal="pressed" from="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer/Stamp2" to="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/GridContainer/Stamp2" method="_on_pressed"]
+[connection signal="pressed" from="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/VBoxContainer/PaletteSwitcher" to="Control/PanelContainer/HBoxContainer/Tools and submit/Tools/VBoxContainer/VBoxContainer/PaletteSwitcher" method="_on_pressed"]

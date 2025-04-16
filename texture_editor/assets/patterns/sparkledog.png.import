@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bpsbrvgjtl4aw"
-path="res://.godot/imported/littleguy_kitty_stripe.png-a1835c6f63292af5bef3ca16ebf3bae2.ctex"
+uid="uid://du0wv8fd1g0ia"
+path="res://.godot/imported/sparkledog.png-6677d85064ddadd261a3c46ab16308b1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/patterns/littleguy_kitty_stripe.png"
-dest_files=["res://.godot/imported/littleguy_kitty_stripe.png-a1835c6f63292af5bef3ca16ebf3bae2.ctex"]
+source_file="res://assets/patterns/sparkledog.png"
+dest_files=["res://.godot/imported/sparkledog.png-6677d85064ddadd261a3c46ab16308b1.ctex"]
 
 [params]
 

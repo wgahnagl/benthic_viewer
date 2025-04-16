@@ -28,8 +28,9 @@ func _on_button_press():
 func draw_at(image: Image, texture: Texture, pos: Vector2, preview_image = false):
 	var width = image.get_width()
 	var height = image.get_height()
-	for y in range(-Globals.CURRENT_BRUSH_SIZE, Globals.CURRENT_BRUSH_SIZE):
-		for x in range(-Globals.CURRENT_BRUSH_SIZE, Globals.CURRENT_BRUSH_SIZE):
+	var size := int(Globals.CURRENT_DRAW_SIZE)
+	for y in range(-size, size):
+		for x in range(-size, size):
 			var p = pos + Vector2(x, y)
 			if (
 				Globals.DRAW_AREA.has_point(p)
@@ -39,17 +40,14 @@ func draw_at(image: Image, texture: Texture, pos: Vector2, preview_image = false
 				and p.y < height
 			):
 				var local_pos = p - Globals.DRAW_AREA_OFFSET
-
 				if !preview_image:
-					Globals.DRAWING[local_pos.y][local_pos.x] = Globals.CURRENT_COLOR  # Note the flip (y, x)
-
+					Globals.DRAWING[local_pos.y][local_pos.x] = Globals.CURRENT_COLOR
 				if Globals.CURRENT_COLOR < 0:
 					image.set_pixelv(p, Color(1, 1, 1, 0))
 				else:
 					image.set_pixelv(
 						p, Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_COLOR]
 					)
-
 				if Globals.MIRROR_ENABLED:
 					var mirror_x = (
 						Globals.DRAW_AREA_OFFSET.x * 2 + Globals.DRAW_AREA_SIZE.x - p.x - 1
@@ -61,7 +59,6 @@ func draw_at(image: Image, texture: Texture, pos: Vector2, preview_image = false
 							Globals.DRAWING[mirror_local_pos.y][mirror_local_pos.x] = (
 								Globals.CURRENT_COLOR
 							)
-
 						if Globals.CURRENT_COLOR < 0:
 							image.set_pixelv(mirror_pos, Color(1, 1, 1, 0))
 						else:
@@ -73,7 +70,7 @@ func draw_at(image: Image, texture: Texture, pos: Vector2, preview_image = false
 
 
 func draw_between(image: Image, texture: Texture, start_pos: Vector2, end_pos: Vector2):
-	var num_steps = int(start_pos.distance_to(end_pos))
+	var num_steps = max(1, int(start_pos.distance_to(end_pos)))
 	for step in range(num_steps):
 		var lerp_pos = start_pos.lerp(end_pos, step / float(num_steps))
 		draw_at(image, texture, lerp_pos)

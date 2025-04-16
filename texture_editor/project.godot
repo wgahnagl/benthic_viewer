@@ -18,7 +18,11 @@ config/icon="res://icon.svg"
 [autoload]
 
 Globals="*res://scripts/core/globals.gd"
-BenthicTheme="*res://themes/benthic_theme.gd"
+BenthicTheme="res://themes/benthic_theme.gd"
+
+[editor_plugins]
+
+enabled=PackedStringArray()
 
 [gui]
 
@@ -28,3 +32,4 @@ theme/custom="res://themes/benthic_theme.tres"
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true

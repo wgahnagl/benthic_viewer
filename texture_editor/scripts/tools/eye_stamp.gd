@@ -6,7 +6,8 @@ signal stamp_selected(index: int)
 
 
 func _ready() -> void:
-	for i in range(2):  # Add as many as you like
+	grid.columns = 2
+	for i in range(8):
 		var texture = load("res://themes/stamps/stamp2_%d.svg" % i)
 		var icon_button = TextureButton.new()
 		icon_button.texture_normal = texture
