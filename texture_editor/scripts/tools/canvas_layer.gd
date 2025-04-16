@@ -80,7 +80,8 @@ func _on_pattern(i: int):
 		1: 
 			var tex = load("res://assets/patterns/littleguy_kitty_stripe.png") as Texture2D
 			var img = tex.get_image()
-			pattern_texture.update(img)
+			pattern_image = img
+			%PatternColor.change_pattern_color(img, pattern_texture)
 
 func _on_undo():
 	%Undo.undo(face_image, face_texture)
@@ -103,7 +104,7 @@ func _on_stamp_2(i: int):
 	stamp2_image = load("res://themes/stamps/stamp2_"+str(stamp2_index)+".svg").get_image()
 
 func _on_palette_selected(id: int): 
-	%PaletteSwitcher.update_palette(face_image, face_texture, base_image, base_texture, id)
+	%PaletteSwitcher.update_palette(face_image, face_texture, base_image, base_texture, pattern_image, pattern_texture, id)
 	if !Globals.SUPPRESS_SAVE: 
 		save_state()
 	Globals.SUPPRESS_SAVE = false 
@@ -113,7 +114,7 @@ func _on_clear():
 	save_state()
 
 func set_player_texture(new_texture: ImageTexture):
-	base_image = Image.create(1024, 104, false, Image.FORMAT_RGBA8)
+	base_image = Image.create(1024, 1024, false, Image.FORMAT_RGBA8)
 	base_image.fill(Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_BACKGROUND_COLOR]) 
 	base_texture = ImageTexture.create_from_image(base_image)
 	

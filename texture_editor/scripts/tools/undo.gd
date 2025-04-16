@@ -1,6 +1,5 @@
 extends Button
 
-
 func undo(image: Image, texture: Texture):
 	if Globals.UNDO_STACK.size() > 1:
 		var current_state = Globals.UNDO_STACK.pop_back()

@@ -67,19 +67,6 @@ const PALETTES = [
 		Color("ad8164ff"),
 		Color("b48c72ff"),
 		Color("bb967fff")
-	],
-	[
-		Color("eae4e9ff"),
-		Color("fff1e6ff"),
-		Color("fde2e4ff"),
-		Color("fad2e1ff"),
-		Color("e2ece9ff"),
-		Color("bee1e6ff"),
-		Color("f0efebff"),
-		Color("dfe7fdff"),
-		Color("cddafdff"),
-		Color("d7e1fdff"),
-		Color("cbbde7ff")
 	]
 ]
 

@@ -17,6 +17,7 @@ func _on_button_press():
 	$"../Circle Tool".button_pressed = false
 	$"../Rectangle Tool".button_pressed = false
 	%Stamp1.button_pressed = false
+	%Stamp2.button_pressed = false
 	$".".button_pressed = true
 
 
@@ -45,5 +46,5 @@ func draw_stamp_on_canvas(image: Image, stamp: Image, pos: Vector2, preview = fa
 							canvas_pos,
 							Globals.PALETTES[Globals.CURRENT_PALETTE][Globals.CURRENT_COLOR]
 						)
-					if preview:
+					if !preview:
 						Globals.DRAWING[local_pos.y][local_pos.x] = Globals.CURRENT_COLOR
