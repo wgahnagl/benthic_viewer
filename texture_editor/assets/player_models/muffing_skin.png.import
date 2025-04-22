@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://byaqxc2aaquvi"
 path.s3tc="res://.godot/imported/muffing_skin.png-c12ef7efb0b7896853899293ffe65cf6.s3tc.ctex"
+path.etc2="res://.godot/imported/muffing_skin.png-c12ef7efb0b7896853899293ffe65cf6.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/player_models/muffing_skin.png"
-dest_files=["res://.godot/imported/muffing_skin.png-c12ef7efb0b7896853899293ffe65cf6.s3tc.ctex"]
+dest_files=["res://.godot/imported/muffing_skin.png-c12ef7efb0b7896853899293ffe65cf6.s3tc.ctex", "res://.godot/imported/muffing_skin.png-c12ef7efb0b7896853899293ffe65cf6.etc2.ctex"]
 
 [params]
 

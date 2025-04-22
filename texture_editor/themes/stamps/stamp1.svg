@@ -10,6 +10,8 @@
    inkscape:export-filename="bitmap.png"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96"
+   sodipodi:docname="stamp1.svg"
+   inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -23,7 +25,16 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
-     inkscape:document-units="px">
+     inkscape:document-units="px"
+     inkscape:zoom="18.9929"
+     inkscape:cx="21.692316"
+     inkscape:cy="20.797245"
+     inkscape:window-width="1840"
+     inkscape:window-height="1043"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1">
     <inkscape:page
        x="0"
        y="0"
@@ -42,7 +53,7 @@
      transform="translate(-3.614234,-3.5146396)">
     <path
        sodipodi:type="spiral"
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:6.29291;stroke-linecap:round;stroke-dasharray:none"
+       style="fill:none;fill-rule:evenodd;stroke:#ffffff;stroke-width:6.29291;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
        id="path1"
        sodipodi:cx="11.240506"
        sodipodi:cy="9.6000004"

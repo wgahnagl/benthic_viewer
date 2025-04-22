@@ -34,3 +34,6 @@ mono_crash.*.json
 
 # Godot build cache
 *.godot/tmp/
+
+# Executables
+Executables/*
