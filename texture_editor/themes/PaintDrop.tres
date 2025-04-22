@@ -4,4 +4,3 @@
 
 [resource]
 texture = ExtResource("1_hg5cl")
-modulate_color = Color(0, 0, 0, 1)

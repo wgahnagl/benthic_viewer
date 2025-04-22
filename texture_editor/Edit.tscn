@@ -1,6 +1,6 @@
 [gd_scene load_steps=53 format=3 uid="uid://x4xy8b8t06cg"]
 
-[ext_resource type="Theme" uid="uid://crjsw8woldjax" path="res://themes/benthic_theme.tres" id="1_cw7ke"]
+[ext_resource type="Theme" uid="uid://dd6t5ivdmhfyx" path="res://themes/benthic_theme.tres" id="1_cw7ke"]
 [ext_resource type="Script" path="res://scripts/tools/rotate_player.gd" id="2_i1vqu"]
 [ext_resource type="Script" path="res://scripts/core/WindowControls.gd" id="2_ofg3j"]
 [ext_resource type="Script" path="res://scripts/tools/color_selector.gd" id="3_1cahl"]
@@ -27,12 +27,12 @@
 [ext_resource type="Script" path="res://scripts/tools/bucket.gd" id="11_pouh1"]
 [ext_resource type="Texture2D" uid="uid://c4o5yo7swqk2r" path="res://themes/icons/pencil.svg" id="11_vxssl"]
 [ext_resource type="Texture2D" uid="uid://xtwwxu4up3k1" path="res://themes/icons/eraser.svg" id="13_ct8d4"]
-[ext_resource type="Texture2D" uid="uid://c3fe3cqkwcd5q" path="res://themes/icons/guide.png" id="13_gx275"]
 [ext_resource type="Script" path="res://scripts/tools/line.gd" id="13_vrssl"]
 [ext_resource type="Script" path="res://scripts/tools/circle_tool.gd" id="14_hpdie"]
 [ext_resource type="Texture2D" uid="uid://dvvxcs6ft7yb7" path="res://themes/icons/bucket.svg" id="15_e0wh2"]
 [ext_resource type="Script" path="res://scripts/tools/rectangle_tool.gd" id="15_evk0c"]
 [ext_resource type="Script" path="res://scripts/tools/stamp_1.gd" id="16_ju5n5"]
+[ext_resource type="Texture2D" uid="uid://cikcmxqwdgqoi" path="res://themes/icons/guide.svg" id="16_qr4al"]
 [ext_resource type="Texture2D" uid="uid://d1j0fllxpg1gx" path="res://themes/icons/line.svg" id="17_yk2bf"]
 [ext_resource type="Script" path="res://scripts/tools/undo.gd" id="19_gh24w"]
 [ext_resource type="Texture2D" uid="uid://wse5iqkpcfa0" path="res://themes/icons/circle.svg" id="19_ubfcn"]
@@ -54,7 +54,7 @@
 bg_color = Color(1, 1, 1, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_axer5"]
-texture = ExtResource("13_gx275")
+texture = ExtResource("16_qr4al")
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_mvc5d"]
 

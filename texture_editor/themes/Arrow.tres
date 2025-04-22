@@ -1,7 +1,6 @@
-[gd_resource type="StyleBoxTexture" load_steps=2 format=3 uid="uid://dhrihlooh0jsx"]
+[gd_resource type="StyleBoxTexture" load_steps=2 format=3 uid="uid://w2rwsb1ayobl"]
 
-[ext_resource type="Texture2D" uid="uid://kr451qo0q7yb" path="res://themes/images/arrow.svg" id="1_uyepw"]
+[ext_resource type="Texture2D" uid="uid://kr451qo0q7yb" path="res://themes/icons/arrow.svg" id="1_uyepw"]
 
 [resource]
 texture = ExtResource("1_uyepw")
-modulate_color = Color(0, 0, 0, 1)

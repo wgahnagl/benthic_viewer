@@ -1,5 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://c171axedliph3"]
-
-[ext_resource type="PackedScene" uid="uid://bn74u4catqsiv" path="res://assets/player_models/Avatar.dae" id="1_evh5r"]
-
-[node name="Avatar" instance=ExtResource("1_evh5r")]
