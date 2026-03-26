@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://dpsob4ctdg0eh"]
+
+[ext_resource type="PackedScene" uid="uid://dhdyirqyg6s8x" path="res://Chat/chat.tscn" id="1_0bq6s"]
+[ext_resource type="Script" uid="uid://q2hdxm0p4ex6" path="res://metaverse_world.gd" id="1_mc0ok"]
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_mc0ok")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Chat" parent="CanvasLayer" instance=ExtResource("1_0bq6s")]
+offset_right = -798.0

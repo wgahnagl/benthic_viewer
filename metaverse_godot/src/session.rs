@@ -15,9 +15,11 @@ use metaverse_messages::packet::message::UIResponse;
 use metaverse_messages::udp::chat::ChatType;
 use metaverse_messages::ui::chat_from_viewer::ChatFromUI;
 use metaverse_messages::ui::errors::SessionError;
+use metaverse_messages::ui::land_update::LandData;
 use metaverse_messages::ui::login_event::Login;
 use metaverse_messages::ui::login_response::LoginResponse;
 use portpicker::pick_unused_port;
+use std::fs;
 use std::net::UdpSocket;
 
 #[derive(GodotClass)]
@@ -153,12 +155,55 @@ impl IControl for MetaverseSession {
                         );
                     }
                 }
-                _ => {
-                    godot_error!("not implemented yet")
+                UIMessage::LandUpdate(land) => match fs::read_to_string(&land.path) {
+                    Ok(json_str) => match serde_json::from_str::<LandData>(&json_str) {
+                        Ok(land_data) => {
+                            let (verts, inds, pos) = land_to_godot_arrays(&land_data);
+
+                            self.base_mut().emit_signal(
+                                &StringName::from("land_update"),
+                                &[verts.to_variant(), inds.to_variant(), pos.to_variant()],
+                            );
+                        }
+                        Err(e) => {
+                            godot_error!("Failed to parse land data: {:?}", e);
+                        }
+                    },
+                    Err(err) => {
+                        godot_error!("Failed to read land patch: {}", err);
+                    }
+                },
+                UIMessage::MeshUpdate(mesh) => {
+                    godot_error!("Mesh Update!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    let pos = Vector3::new(mesh.position.x, mesh.position.y, mesh.position.z);
+                    let rot = Vector3::new(mesh.rotation.x, mesh.rotation.y, mesh.rotation.z);
+                    let scale = Vector3::new(mesh.scale.x, mesh.scale.y, mesh.scale.z);
+                    let path = mesh.path.to_string_lossy().to_string().to_variant();
+
+                    self.base_mut().emit_signal(
+                        "mesh_update",
+                        &[path, pos.to_variant(), rot.to_variant(), scale.to_variant()],
+                    );
+                }
+                unimplemented => {
+                    godot_error!("not implemented yet! {:?}", unimplemented);
                 }
             }
         }
     }
+}
+
+fn land_to_godot_arrays(land: &LandData) -> (PackedVector3Array, PackedInt32Array, Vector3) {
+    let mut verts = PackedVector3Array::new();
+    for v in &land.vertices {
+        verts.push(Vector3::new(v.x, v.y, v.z));
+    }
+    let mut inds = PackedInt32Array::new();
+    for i in &land.indices {
+        inds.push(*i as i32);
+    }
+    let pos = Vector3::new(land.position.x, land.position.y, land.position.z);
+    (verts, inds, pos)
 }
 
 #[godot_api]
@@ -168,6 +213,12 @@ impl MetaverseSession {
 
     #[signal]
     fn chat_from_simulator(&self, user: String, message: String, chat_from_self: bool);
+
+    #[signal]
+    fn land_update(vertices: PackedVector3Array, indices: PackedInt32Array, position: Vector3);
+
+    #[signal]
+    fn mesh_update(path: String, position: Vector3, rotation: Vector3, scale: Vector3);
 
     #[func]
     fn login(&self, first: String, last: String, passwd: String, url: String) {

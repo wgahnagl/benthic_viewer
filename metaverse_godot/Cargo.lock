@@ -4697,6 +4697,7 @@ dependencies = [
  "metaverse_core",
  "metaverse_messages",
  "portpicker",
+ "serde_json",
  "tempfile",
  "tokio",
 ]
