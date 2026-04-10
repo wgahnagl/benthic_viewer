@@ -4,11 +4,9 @@ extends Node3D
 func _ready() -> void:
 	metaverse_session.connect("land_update", _on_land_update)
 	metaverse_session.connect("mesh_update", _on_mesh_update)
+	metaverse_session.connect("camera_position_update", _on_camera_position_update)
 	
 func _on_land_update(vertices: PackedVector3Array, indices: PackedInt32Array, land_position: Vector3):
-	$Camera3D.position = Vector3(50, 50, 320)  
-	$Camera3D.look_at(Vector3(0,0,0), Vector3.UP)
-
 	var mesh = ArrayMesh.new()
 	var arrays = []
 	arrays.resize(Mesh.ARRAY_MAX)
@@ -29,25 +27,26 @@ func _on_land_update(vertices: PackedVector3Array, indices: PackedInt32Array, la
 	instance.mesh = mesh
 	instance.position = land_position
 	instance.scale = Vector3(1,1,1)
-	print(land_position)
-	print("Land Rendered")
 	add_child(instance)
 
-
 func _on_mesh_update(path: String, position: Vector3, rotation: Vector3, scale: Vector3):
-	print("Loading mesh (runtime): ", path)
-	var doc = GLTFDocument.new()
+	print("Loading mesh: ", path)
+	
+	var gltf = GLTFDocument.new()
 	var state = GLTFState.new()
-	var err = doc.append_from_file(path, state)
+	var err = gltf.append_from_file(path, state)
 	if err != OK:
-		print("Failed to parse GLB: ", path)
+		print("Failed to parse GLB:", path)
 		return
-	var scene = doc.generate_scene(state)
+	var scene = gltf.generate_scene(state)
 	if scene == null:
 		print("Failed to generate scene")
 		return
+
 	scene.position = position
 	scene.rotation = rotation
 	scene.scale = scale
-
 	add_child(scene)
+
+func _on_camera_position_update(position: Vector3):
+	$Camera.global_position = position
